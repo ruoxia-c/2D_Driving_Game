@@ -2,7 +2,10 @@
 #define STUDENTWORLD_H_
 
 #include "GameWorld.h"
+#include "Actor.h"
 #include <string>
+#include <list>
+using namespace std;
 
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
 
@@ -15,6 +18,8 @@ public:
     virtual void cleanUp();
 
 private:
+    GhostRacer* player;
+    list<Actor*> actors;
 };
 
 #endif // STUDENTWORLD_H_

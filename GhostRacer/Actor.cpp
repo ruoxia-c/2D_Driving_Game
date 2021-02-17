@@ -2,7 +2,7 @@
 #include "StudentWorld.h"
 #include <cmath>
 // Students:  Add code to this file, Actor.h, StudentWorld.h, and StudentWorld.cpp
-
+//Actor
 bool Actor::checkOverlap()
 {
     double delta_x = abs(this->getX() - other->getX());
@@ -12,3 +12,13 @@ bool Actor::checkOverlap()
         return true;
     return false;
 }
+
+//GhostRacer
+bool GhostRacer::isAlive()
+{
+    if (health <= 0)
+        return false;
+    else
+        return true;
+}
+
