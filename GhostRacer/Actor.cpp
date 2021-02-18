@@ -20,19 +20,20 @@ void GhostRacer::doSomething()
     if(!isLive())
         return;
     if(getX() <= ROAD_CENTER - ROAD_WIDTH/2){
-        if(getDirection()>90)
+        if(getDirection()>90){
             demageRacer(10);
-        setDirection(82);
-        getWorld()->playSound(SOUND_VEHICLE_CRASH);
-        moveAlgorithm();
+            setDirection(82);
+            getWorld()->playSound(SOUND_VEHICLE_CRASH);
+            moveAlgorithm();
+        }
     }
     if(getX() >= ROAD_CENTER + ROAD_WIDTH/2){
-        if(getDirection()<90)
-            //need to change
+        if(getDirection()<90){
             demageRacer(10);
-        setDirection(98);
-        getWorld()->playSound(SOUND_VEHICLE_CRASH);
-        moveAlgorithm();
+            setDirection(98);
+            getWorld()->playSound(SOUND_VEHICLE_CRASH);
+            moveAlgorithm();
+        }
     }
     int ch;
     if(getWorld()->getKey(ch))
@@ -41,7 +42,7 @@ void GhostRacer::doSomething()
         {
             case KEY_PRESS_LEFT:
                 if(getDirection() < 114){
-                    setDirection(getDirection()+10);
+                    setDirection(getDirection()+8);
                     moveAlgorithm();
                 }
                 break;
@@ -52,16 +53,19 @@ void GhostRacer::doSomething()
                 }
                 break;
             case KEY_PRESS_UP:
-                if(getHoriS() < 5){
-                    insHoriS(1);
+                if(getVerS() < 5){
+                    insVerS(1);
                     moveAlgorithm();
                 }
                 break;
             case KEY_PRESS_DOWN:
-                if(getHoriS() > -1){
-                    desHoriS(1);
+                if(getVerS() > -1){
+                    desVerS(1);
                     moveAlgorithm();
                 }
+                break;
+            default:
+                break;
         }
     }
 }

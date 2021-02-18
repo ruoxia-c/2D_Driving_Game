@@ -8,10 +8,10 @@ class StudentWorld;
 class Actor:public GraphObject
 {
 public:
-    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,bool liveState):
+    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp):
     GraphObject(imageID, startX, startY, startDirection, size, depth),m_world(cp)
     {
-        liveState = liveState;
+        liveState = true;
         vertSpeed = vertSpeed;
         horiSpeed = horiSpeed;
     }; //constructor
@@ -26,6 +26,9 @@ protected:
     StudentWorld* getWorld(){return m_world;}
     void desHoriS(int chan){ horiSpeed = horiSpeed - chan;}
     void insHoriS(int chan){ horiSpeed = horiSpeed + chan;}
+    void desVerS(int chan){ vertSpeed = vertSpeed - chan;}
+    void insVerS(int chan){ vertSpeed = vertSpeed + chan;}
+    
     void notLive(){ liveState = false;};
     //bool checkOverlap(Actor* cp);
 private:
@@ -39,7 +42,7 @@ class GhostRacer: public Actor
 {
 public:
     GhostRacer(StudentWorld* cp):
-    Actor(IID_GHOST_RACER,128,32,90,4.0,0,0,0,cp,true)
+    Actor(IID_GHOST_RACER,128,32,90,4.0,0,0,0,cp)
     {
         holyWater = 10;
         health = 100;
@@ -58,7 +61,7 @@ class BorderLine: public Actor
 {
 public:
     BorderLine(int imageID, double startX, double startY,StudentWorld* cp, bool isYellow):
-    Actor(imageID, startX, startY,0,2.0,1,-4,0,cp,true)
+    Actor(imageID, startX, startY,0,2.0,2,-4,0,cp)
     { isYellow = isYellow;};
     virtual void doSomething();
     virtual bool isYellowLine(){ return isYellow;}

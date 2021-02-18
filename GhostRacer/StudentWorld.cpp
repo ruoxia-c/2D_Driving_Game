@@ -50,14 +50,14 @@ int StudentWorld::move()
     // This code is here merely to allow the game to build, run, and terminate after you hit enter.
     // Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
     player->doSomething();
-    
+    /*
     list<Actor*>:: iterator it;
     for(it = actors.begin(); it!=actors.end();it++){
         if((*it)->isLive()){
             (*it)->doSomething();
         }
     }
-    /*
+    
     //Remove dead
     for(it = actors.begin(); it!=actors.end();){
         if(!(*it)->isLive()){
@@ -98,7 +98,7 @@ int StudentWorld::move()
     int sprays = player->getSprays();
     int bonus = 500;
     ostringstream oss;
-    oss << "Score:  "<<score<<"  Lvl:  "<<level<<"  Souls2Save:  "<<souls<<"  Lives:  "<<lives<<"  Health:  "<<health <<"  Sprays:  "<<sprays<<"  Bonus:  "<<bonus;
+    oss << "Score: "<<score<<"  Lvl: "<<level<<"  Souls2Save: "<<souls<<"  Lives: "<<lives<<"  Health: "<<health <<"  Sprays: "<<sprays<<"  Bonus: "<<bonus;
     string s=oss.str();
     setGameStatText(s);
     return GWSTATUS_CONTINUE_GAME;
