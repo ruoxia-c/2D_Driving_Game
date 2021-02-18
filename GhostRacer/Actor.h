@@ -46,6 +46,8 @@ public:
     };
     virtual void doSomething();
     void demageRacer(int hitPoint);
+    int getHealth(){ return health;};
+    int getSprays(){ return holyWater;};
 private:
     void moveAlgorithm();
     int holyWater;

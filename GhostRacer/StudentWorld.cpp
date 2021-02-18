@@ -1,6 +1,9 @@
 #include "StudentWorld.h"
 #include "GameConstants.h"
 #include <string>
+#include <iostream>
+#include <sstream>
+
 using namespace std;
 
 GameWorld* createStudentWorld(string assetPath)
@@ -47,6 +50,24 @@ int StudentWorld::move()
     // This code is here merely to allow the game to build, run, and terminate after you hit enter.
     // Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
     player->doSomething();
+    /*
+    list<Actor*>:: iterator it;
+    for(it = actors.begin(); it!=actors.end();){
+        if((*it)->isLive()){
+            (*it)->doSomething();
+        }
+    }*/
+    int score = getScore();
+    int level = getLevel();
+    int souls = 5;
+    int lives = getLives();
+    int health = player->getHealth();
+    int sprays = player->getSprays();
+    int bonus = 500;
+    ostringstream oss;
+    oss << "Score:  "<<score<<"  Lvl:  "<<level<<"  Souls2Save:  "<<souls<<"  Lives:  "<<lives<<"  Health:  "<<health <<"  Sprays:  "<<sprays<<"  Bonus:  "<<bonus;
+    string s=oss.str();
+    setGameStatText(s);
     decLives();
     return GWSTATUS_CONTINUE_GAME;
 }
