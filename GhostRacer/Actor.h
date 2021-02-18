@@ -2,23 +2,34 @@
 #define ACTOR_H_
 
 #include "GraphObject.h"
+class StudentWorld;
 
 // Students:  Add code to this file, Actor.cpp, StudentWorld.h, and StudentWorld.cpp
 class Actor:public GraphObject
 {
 public:
-    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed):
-    GraphObject(imageID, startX, startY, startDirection, size, depth)
+    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,bool liveState):
+    GraphObject(imageID, startX, startY, startDirection, size, depth),m_world(cp)
     {
+        liveState = liveState;
         vertSpeed = vertSpeed;
         horiSpeed = horiSpeed;
     }; //constructor
     virtual void doSomething(){};
-    virtual bool isAlive()
-    {return (0);};
-    bool checkOverlap();
+    bool isLive(){
+        return liveState;
+    }
+protected:
+    StudentWorld* getWorld(){
+        return m_world;
+    }
+    void changeLive(bool live){
+        liveState = live;
+    }
+    //bool checkOverlap(Actor* cp);
 private:
-    Actor* other;
+    StudentWorld* m_world;
+    bool liveState;
     int vertSpeed;
     int horiSpeed;
 };
@@ -26,26 +37,28 @@ private:
 class GhostRacer: public Actor
 {
 public:
-    GhostRacer():
-    Actor(IID_GHOST_RACER,128,32,90,4.0,0,0,0)
+    GhostRacer(StudentWorld* cp):
+    Actor(IID_GHOST_RACER,128,32,90,4.0,0,0,0,cp,true)
     {
-        holy_water = 10;
+        holyWater = 10;
         health = 100;
+        m_speed = 0;
     };
-    virtual bool isAlive();
-    virtual void doSomething(){};
+    virtual void doSomething();
+    void demageRacer(int hitPoint);
 private:
-    int holy_water;
+    void moveAlgorithm();
+    int holyWater;
     int health;
+    double m_speed;
 };
 
 class BorderLine: public Actor
 {
 public:
-    BorderLine(int imageID, double startX, double startY):
-    Actor(imageID, startX, startY,0,2.0,1,-4,0)
+    BorderLine(int imageID, double startX, double startY,StudentWorld* cp):
+    Actor(imageID, startX, startY,0,2.0,1,-4,0,cp,true)
     {};
-    virtual bool isAlive(){ return false;};
     virtual void doSomething() {};
 private:
     
