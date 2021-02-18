@@ -16,16 +16,17 @@ public:
         horiSpeed = horiSpeed;
     }; //constructor
     virtual void doSomething(){};
+    virtual bool isYellowLine(){ return false;};
     bool isLive(){
         return liveState;
     }
+    int getHoriS(){ return horiSpeed;}
+    int getVerS(){ return vertSpeed;}
 protected:
-    StudentWorld* getWorld(){
-        return m_world;
-    }
-    void changeLive(bool live){
-        liveState = live;
-    }
+    StudentWorld* getWorld(){return m_world;}
+    void desHoriS(int chan){ horiSpeed = horiSpeed - chan;}
+    void insHoriS(int chan){ horiSpeed = horiSpeed + chan;}
+    void notLive(){ liveState = false;};
     //bool checkOverlap(Actor* cp);
 private:
     StudentWorld* m_world;
@@ -42,7 +43,6 @@ public:
     {
         holyWater = 10;
         health = 100;
-        m_speed = 0;
     };
     virtual void doSomething();
     void demageRacer(int hitPoint);
@@ -52,18 +52,18 @@ private:
     void moveAlgorithm();
     int holyWater;
     int health;
-    double m_speed;
 };
 
 class BorderLine: public Actor
 {
 public:
-    BorderLine(int imageID, double startX, double startY,StudentWorld* cp):
+    BorderLine(int imageID, double startX, double startY,StudentWorld* cp, bool isYellow):
     Actor(imageID, startX, startY,0,2.0,1,-4,0,cp,true)
-    {};
-    virtual void doSomething() {};
+    { isYellow = isYellow;};
+    virtual void doSomething();
+    virtual bool isYellowLine(){ return isYellow;}
 private:
-    
+    bool isYellow;
 };
 
 #endif // ACTOR_H_

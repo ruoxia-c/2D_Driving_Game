@@ -52,14 +52,14 @@ void GhostRacer::doSomething()
                 }
                 break;
             case KEY_PRESS_UP:
-                if(m_speed < 5){
-                    m_speed++;
+                if(getHoriS() < 5){
+                    insHoriS(1);
                     moveAlgorithm();
                 }
                 break;
             case KEY_PRESS_DOWN:
-                if(m_speed > -1){
-                    m_speed--;
+                if(getHoriS() > -1){
+                    desHoriS(1);
                     moveAlgorithm();
                 }
         }
@@ -80,7 +80,22 @@ void GhostRacer::demageRacer(int hitPoint)
 {
     health = health-hitPoint;
     if(health <= 0){
-        changeLive(false);
+        notLive();
         getWorld()->playSound(SOUND_PLAYER_DIE);
     }
 }
+
+//BorderLine
+void BorderLine::doSomething()
+{
+    int vert_speed = getVerS() - getWorld()->racerVerS();
+    int horiz_speed = getHoriS();
+    int new_y = getY() + vert_speed;
+    int new_x = getX() + horiz_speed;
+    moveTo(new_x, new_y);
+    if(getY() < 0 || getX() < 0 || getY() > VIEW_HEIGHT || getX() > VIEW_WIDTH){
+        notLive();
+        return;
+    }
+}
+
