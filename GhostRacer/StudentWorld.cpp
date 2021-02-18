@@ -50,7 +50,7 @@ int StudentWorld::move()
     // This code is here merely to allow the game to build, run, and terminate after you hit enter.
     // Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
     player->doSomething();
-    /*
+    
     list<Actor*>:: iterator it;
     for(it = actors.begin(); it!=actors.end();it++){
         if((*it)->isLive()){
@@ -66,7 +66,7 @@ int StudentWorld::move()
         }
         else
             it++;
-    }
+    }/*
     //Add new BorderLine
     int new_border_y = VIEW_HEIGHT - SPRITE_HEIGHT;
     it = actors.end();

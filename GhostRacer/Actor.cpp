@@ -92,10 +92,9 @@ void GhostRacer::demageRacer(int hitPoint)
 //BorderLine
 void BorderLine::doSomething()
 {
-    int vert_speed = getVerS() - getWorld()->racerVerS();
-    int horiz_speed = getHoriS();
-    int new_y = getY() + vert_speed;
-    int new_x = getX() + horiz_speed;
+    desVerS(getWorld()->racerVerS());
+    int new_y = getY() + getVerS();
+    int new_x = getX() + getHoriS();
     moveTo(new_x, new_y);
     if(getY() < 0 || getX() < 0 || getY() > VIEW_HEIGHT || getX() > VIEW_WIDTH){
         notLive();
