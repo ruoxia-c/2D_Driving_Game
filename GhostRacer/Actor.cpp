@@ -99,10 +99,10 @@ void BorderLine::doSomething()
 {
     if(!isLive())
         return;
-    //desVerS(getWorld()->getPlayer()->getVerS());
-    double vert_speed = getVerS() -getWorld()->getPlayer()->getVerS();
+    int vert_speed = getVerS() - getWorld()->getPlayer()->getVerS();
     double new_y = getY() + vert_speed;
-    double new_x = getX() + getHoriS();
+    //double new_x = getX() + getHoriS();
+    double new_x = getX();
     moveTo(new_x, new_y);
     if(getY() < 0 || getX() < 0 || getY() > VIEW_HEIGHT || getX() > VIEW_WIDTH){
         notLive();

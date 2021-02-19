@@ -53,11 +53,11 @@ int StudentWorld::move()
     
     list<Actor*>:: iterator it;
     for(it = actors.begin(); it!=actors.end();it++){
-        //if((*it)->isLive()){
+        if((*it)->isLive()){
             (*it)->doSomething();
-        //}
+        }
     }
-    /*
+    
     //Remove dead
     for(it = actors.begin(); it!=actors.end();){
         if(!(*it)->isLive()){
@@ -99,7 +99,7 @@ int StudentWorld::move()
             BorderLine* wh2 = new BorderLine(IID_WHITE_BORDER_LINE, ROAD_CENTER + ROAD_WIDTH / 2 - ROAD_WIDTH/3,new_border_y,this,true);
             actors.push_back(wh2);
         }
-    }*/
+    }
     
     //Display
     int score = getScore();

@@ -8,41 +8,37 @@ class StudentWorld;
 class Actor:public GraphObject
 {
 public:
-    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, double vertSpeed, double horiSpeed, StudentWorld* cp):
-    GraphObject(imageID, startX, startY, startDirection, size, depth),m_world(cp)
-    {
-        liveState = true;
-        vertSpeed = vertSpeed;
-        horiSpeed = horiSpeed;
-    }; //constructor
+    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,bool alive):
+    GraphObject(imageID, startX, startY, startDirection, size, depth),m_world(cp),vertSpeed(vertSpeed),horiSpeed(horiSpeed),liveState(alive)
+    { }; //constructor
     virtual void doSomething(){};
     virtual bool isWhiteLine(){ return false;};
     bool isLive(){
         return liveState;
     }
-    double getHoriS(){ return horiSpeed;}
-    double getVerS(){ return vertSpeed;}
+    int getHoriS(){ return horiSpeed;}
+    int getVerS(){ return vertSpeed;}
 protected:
     StudentWorld* getWorld(){return m_world;}
-    void desHoriS(double chan){ horiSpeed = horiSpeed - chan;}
-    void insHoriS(double chan){ horiSpeed = horiSpeed + chan;}
-    void desVerS(double chan){ vertSpeed = vertSpeed - chan;}
-    void insVerS(double chan){ vertSpeed = vertSpeed + chan;}
+    void desHoriS(int chan){ horiSpeed = horiSpeed - chan;}
+    void insHoriS(int chan){ horiSpeed = horiSpeed + chan;}
+    void desVerS(int chan){ vertSpeed = vertSpeed - chan;}
+    void insVerS(int chan){ vertSpeed = vertSpeed + chan;}
     
     void notLive(){ liveState = false;};
     //bool checkOverlap(Actor* cp);
 private:
     StudentWorld* m_world;
     bool liveState;
-    double vertSpeed;
-    double horiSpeed;
+    int vertSpeed;
+    int horiSpeed;
 };
 
 class GhostRacer: public Actor
 {
 public:
     GhostRacer(StudentWorld* cp):
-    Actor(IID_GHOST_RACER,128,32,90,4.0,0,0,0,cp)
+    Actor(IID_GHOST_RACER,128,32,90,4.0,0,0,0,cp,true)
     {
         holyWater = 10;
         health = 100;
@@ -61,7 +57,7 @@ class BorderLine: public Actor
 {
 public:
     BorderLine(int imageID, double startX, double startY,StudentWorld* cp, bool isWhite):
-    Actor(imageID, startX, startY,0,2.0,2,-4,0,cp)
+    Actor(imageID, startX, startY,0,2.0,2,-4,0,cp,true)
     { isWhite = isWhite;};
     virtual void doSomething();
     virtual bool isWhiteLine(){ return isWhite;}
