@@ -14,6 +14,13 @@ bool Actor::checkOverlap(Actor* cp)
     return false;
 }
 */
+void Actor::moveSameHori()
+{
+    int vert_speed = vertSpeed - m_world->getPlayer()->getVerS();
+    double new_y = getY() + vert_speed;
+    double new_x = getX() + horiSpeed;
+    moveTo(new_x, new_y);
+}
 //GhostRacer
 void GhostRacer::doSomething()
 {
@@ -98,13 +105,18 @@ void BorderLine::doSomething()
 {
     if(!isLive())
         return;
-    int vert_speed = getVerS() - getWorld()->getPlayer()->getVerS();
-    double new_y = getY() + vert_speed;
+    //int vert_speed = getVerS() - getWorld()->getPlayer()->getVerS();
+    //double new_y = getY() + vert_speed;
     //double new_x = getX() + getHoriS();
-    double new_x = getX();
-    moveTo(new_x, new_y);
+    //moveTo(new_x, new_y);
+    moveSameHori();
     if(getY() < 0 || getX() < 0 || getY() > VIEW_HEIGHT || getX() > VIEW_WIDTH){
         notLive();
     }
 }
 
+//Soul
+void Soul::doSomething()
+{
+    
+}

@@ -11,7 +11,7 @@ public:
     Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,bool alive):
     GraphObject(imageID, startX, startY, startDirection, size, depth),m_world(cp),vertSpeed(vertSpeed),horiSpeed(horiSpeed),liveState(alive)
     { }; //constructor
-    virtual void doSomething(){};
+    virtual void doSomething()=0;
     virtual bool isWhiteLine(){ return false;};
     bool isLive(){
         return liveState;
@@ -22,8 +22,9 @@ protected:
     StudentWorld* getWorld(){return m_world;}
     void setHoriS(int chan){ horiSpeed = horiSpeed + chan;}
     void setVerS(int chan){ vertSpeed = vertSpeed + chan;}
-    
     void notLive(){ liveState = false;};
+    
+    void moveSameHori();
     //bool checkOverlap(Actor* cp);
 private:
     StudentWorld* m_world;
@@ -62,5 +63,20 @@ public:
 private:
     bool isWhite;
 };
+/*
+class Goodies: public Actor
+{
+public:
+    virtual void doSomething(){};
+};*/
 
+class Soul: public Actor
+{
+public:
+    Soul(double startX, double startY,StudentWorld* cp):
+    Actor(IID_SOUL_GOODIE,startX, startY,0,4.0,2,-4,0,cp,true)
+    {}
+    virtual void doSomething();
+private:
+};
 #endif // ACTOR_H_

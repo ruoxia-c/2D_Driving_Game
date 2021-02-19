@@ -22,6 +22,9 @@ private:
     GhostRacer* player;
     list<Actor*> actors;
     double lastWhiteY;
+    const double LEFT_EDGE = ROAD_CENTER - ROAD_WIDTH/2;
+    const double RIGHT_EDGE = ROAD_CENTER + ROAD_WIDTH/2;
+    bool addGoodies(int maxChance);
 };
 
 #endif // STUDENTWORLD_H_

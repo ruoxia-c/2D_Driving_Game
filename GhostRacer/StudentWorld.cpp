@@ -93,6 +93,11 @@ int StudentWorld::move()
         actors.push_back(wh2);
         lastWhiteY  = new_border_y;
     }
+    //add soul goodies
+    int ChanceOfLostSoul = 100;
+    if(addGoodies(ChanceOfLostSoul)){
+        actors.push_back(new Soul(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
+    }
     
     //Display
     int score = getScore();
@@ -101,7 +106,7 @@ int StudentWorld::move()
     int lives = getLives();
     int health = player->getHealth();
     int sprays = player->getSprays();
-    int bonus = 500;
+    int bonus = 0;
     ostringstream oss;
     oss << "Score: "<<score<<"  Lvl: "<<level<<"  Souls2Save: "<<souls<<"  Lives: "<<lives<<"  Health: "<<health <<"  Sprays: "<<sprays<<"  Bonus: "<<bonus;
     string s=oss.str();
@@ -124,4 +129,11 @@ StudentWorld::~StudentWorld()
     cleanUp();
 }
 
-
+bool StudentWorld::addGoodies(int maxChance)
+{
+    int chance = randInt(0, maxChance);
+    if(chance == 0){
+        return true;
+    }
+    return false;
+}
