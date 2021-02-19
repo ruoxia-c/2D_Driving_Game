@@ -6,34 +6,6 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>258F3D95-4372-444F-B2C9-66CB6DD712D4</key>
-		<dict>
-			<key>className</key>
-			<string>IDEActivityLogMajorGroupSection</string>
-			<key>documentTypeString</key>
-			<string>&lt;nil&gt;</string>
-			<key>domainType</key>
-			<string>Xcode.IDEActivityLogDomainType.target.product-type.tool</string>
-			<key>fileName</key>
-			<string>258F3D95-4372-444F-B2C9-66CB6DD712D4.xcactivitylog</string>
-			<key>hasPrimaryLog</key>
-			<true/>
-			<key>primaryObservable</key>
-			<dict>
-				<key>highLevelStatus</key>
-				<string>W</string>
-			</dict>
-			<key>signature</key>
-			<string>GhostRacer-bjopoezrtljkxqcnrrtcldueeqsj</string>
-			<key>timeStartedRecording</key>
-			<real>635406364.77850997</real>
-			<key>timeStoppedRecording</key>
-			<real>635406367.69127202</real>
-			<key>title</key>
-			<string>Build target GhostRacer</string>
-			<key>uniqueIdentifier</key>
-			<string>258F3D95-4372-444F-B2C9-66CB6DD712D4</string>
-		</dict>
 		<key>A6A3232B-9800-41F1-AB69-866EA225E535</key>
 		<dict>
 			<key>className</key>
@@ -56,6 +28,34 @@
 			<string>Build target GhostRacer</string>
 			<key>uniqueIdentifier</key>
 			<string>A6A3232B-9800-41F1-AB69-866EA225E535</string>
+		</dict>
+		<key>F90F9C27-59A7-4F9A-B4D2-E24723B260D7</key>
+		<dict>
+			<key>className</key>
+			<string>IDEActivityLogMajorGroupSection</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.target.product-type.tool</string>
+			<key>fileName</key>
+			<string>F90F9C27-59A7-4F9A-B4D2-E24723B260D7.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>signature</key>
+			<string>GhostRacer-bjopoezrtljkxqcnrrtcldueeqsj</string>
+			<key>timeStartedRecording</key>
+			<real>635408061.09222198</real>
+			<key>timeStoppedRecording</key>
+			<real>635408065.93944097</real>
+			<key>title</key>
+			<string>Build target GhostRacer</string>
+			<key>uniqueIdentifier</key>
+			<string>F90F9C27-59A7-4F9A-B4D2-E24723B260D7</string>
 		</dict>
 	</dict>
 	<key>preserveOldLogs</key>

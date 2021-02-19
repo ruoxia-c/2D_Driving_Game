@@ -20,10 +20,8 @@ public:
     int getVerS(){ return vertSpeed;}
 protected:
     StudentWorld* getWorld(){return m_world;}
-    void desHoriS(int chan){ horiSpeed = horiSpeed - chan;}
-    void insHoriS(int chan){ horiSpeed = horiSpeed + chan;}
-    void desVerS(int chan){ vertSpeed = vertSpeed - chan;}
-    void insVerS(int chan){ vertSpeed = vertSpeed + chan;}
+    void setHoriS(int chan){ horiSpeed = horiSpeed + chan;}
+    void setVerS(int chan){ vertSpeed = vertSpeed + chan;}
     
     void notLive(){ liveState = false;};
     //bool checkOverlap(Actor* cp);

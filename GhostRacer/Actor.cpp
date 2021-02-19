@@ -54,13 +54,13 @@ void GhostRacer::doSomething()
                 break;
             case KEY_PRESS_UP:
                 if(getVerS() < 5){
-                    insVerS(1);
+                    setVerS(1);
                     moveAlgorithm();
                 }
                 break;
             case KEY_PRESS_DOWN:
                 if(getVerS() > -1){
-                    desVerS(1);
+                    setVerS(-1);
                     moveAlgorithm();
                 }
                 break;
@@ -78,7 +78,6 @@ void GhostRacer::moveAlgorithm()
     static const double PI = 4 * atan(1.0);
     double max_shift_per_tick = 4.0;
     int direction = getDirection();
-    //int test = cos(direction);
     double delta_x = cos(direction*PI/180) * max_shift_per_tick;
     double cur_x = getX();
     double cur_y = getY();

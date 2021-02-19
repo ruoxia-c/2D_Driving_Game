@@ -71,8 +71,7 @@ int StudentWorld::move()
     
     //Add new BorderLine
     double new_border_y = VIEW_HEIGHT - SPRITE_HEIGHT;
-    it = actors.end();
-    for(; it!=actors.begin();){
+    for(it = actors.end(); it!=actors.begin();){
         it--;
         if((*it)->isWhiteLine())
             break;
