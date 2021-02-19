@@ -26,7 +26,7 @@ protected:
     
     void moveSameHori();
     bool offScreen();
-    bool checkOverlap();
+    bool checkOverlap(Actor* cp);
 private:
     StudentWorld* m_world;
     bool liveState;
@@ -47,6 +47,7 @@ public:
     void demageRacer(int hitPoint);
     int getHealth(){ return health;};
     int getSprays(){ return holyWater;};
+    void changeHealth(int val){ health = health + val;};
 private:
     void moveAlgorithm();
     int holyWater;
@@ -64,20 +65,41 @@ public:
 private:
     bool isWhite;
 };
-/*
+
 class Goodies: public Actor
 {
 public:
-    virtual void doSomething(){};
-};*/
+    Goodies(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,int playSound,int increaseScor):
+    Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true),playSound(playSound),inScore(increaseScor)
+    {};
+    virtual void doSomething();
+private:
+    int playSound;
+    int inScore;
+    virtual void overDiff()=0;
+    virtual void otherDiff()=0;
+};
 
-class Soul: public Actor
+class Soul: public Goodies
 {
 public:
     Soul(double startX, double startY,StudentWorld* cp):
-    Actor(IID_SOUL_GOODIE,startX, startY,0,4.0,2,-4,0,cp,true)
+    Goodies(IID_SOUL_GOODIE,startX, startY,0,4.0,2,-4,0,cp,SOUND_GOT_SOUL,100)
     {}
     virtual void doSomething();
 private:
+    virtual void overDiff();
+    virtual void otherDiff();
+};
+
+class Healing: public Goodies
+{
+public:
+    Healing(double startX, double startY,StudentWorld* cp):
+    Goodies(IID_HEAL_GOODIE,startX, startY,0,1.0,2,-4,0,cp,SOUND_GOT_GOODIE,250)
+    {};
+private:
+    virtual void overDiff();
+    virtual void otherDiff(){};
 };
 #endif // ACTOR_H_

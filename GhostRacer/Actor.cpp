@@ -20,10 +20,10 @@ bool Actor::offScreen()
     return false;
 }
 
-bool Actor::checkOverlap()
+bool Actor::checkOverlap(Actor* cp)
 {
-    double delta_x = abs(getX() - m_world->getPlayer()->getX());
-    double delta_y = abs(getY() - m_world->getPlayer()->getY());
+    double delta_x = abs(getX() - cp->getX());
+    double delta_y = abs(getY() - cp->getY());
     double radius_sum = getRadius() + m_world->getPlayer()->getRadius();
     if(delta_x < radius_sum*0.25 && delta_y < radius_sum*0.6)
         return true;
@@ -118,18 +118,34 @@ void BorderLine::doSomething()
     offScreen();
 }
 
-//Soul
-void Soul::doSomething()
+//Goodies
+void Goodies::doSomething()
 {
     moveSameHori();
     if(offScreen())
         return;
-    if(checkOverlap())
+    if(checkOverlap(getWorld()->getPlayer()))
     {
-        getWorld()->saveNewSoul();
         notLive();
-        getWorld()->playSound(SOUND_GOT_SOUL);
-        getWorld()->increaseScore(100);
+        getWorld()->playSound(playSound);
+        getWorld()->increaseScore(inScore);
+        overDiff();
     }
+    otherDiff();
+}
+//Soul
+void Soul::overDiff()
+{
+    getWorld()->saveNewSoul();
+}
+
+void Soul::otherDiff()
+{
     setDirection(getDirection()-10);
+}
+
+//Healing
+void Healing::overDiff()
+{
+    getWorld()->getPlayer()->changeHealth(10);
 }
