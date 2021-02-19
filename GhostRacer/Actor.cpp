@@ -3,17 +3,6 @@
 #include <cmath>
 // Students:  Add code to this file, Actor.h, StudentWorld.h, and StudentWorld.cpp
 //Actor
-/*
-bool Actor::checkOverlap(Actor* cp)
-{
-    double delta_x = abs(getX() - cp->getX());
-    double delta_y = abs(getY() - cp->getY());
-    double radius_sum = getRadius() + cp->getRadius();
-    if(delta_x < radius_sum*0.25 && delta_y < radius_sum*0.6)
-        return true;
-    return false;
-}
-*/
 void Actor::moveSameHori()
 {
     int vert_speed = vertSpeed - m_world->getPlayer()->getVerS();
@@ -21,6 +10,26 @@ void Actor::moveSameHori()
     double new_x = getX() + horiSpeed;
     moveTo(new_x, new_y);
 }
+
+bool Actor::offScreen()
+{
+    if(getY() < 0 || getX() < 0 || getY() > VIEW_HEIGHT || getX() > VIEW_WIDTH){
+        notLive();
+        return true;
+    }
+    return false;
+}
+
+bool Actor::checkOverlap()
+{
+    double delta_x = abs(getX() - m_world->getPlayer()->getX());
+    double delta_y = abs(getY() - m_world->getPlayer()->getY());
+    double radius_sum = getRadius() + m_world->getPlayer()->getRadius();
+    if(delta_x < radius_sum*0.25 && delta_y < radius_sum*0.6)
+        return true;
+    return false;
+}
+
 //GhostRacer
 void GhostRacer::doSomething()
 {
@@ -105,18 +114,22 @@ void BorderLine::doSomething()
 {
     if(!isLive())
         return;
-    //int vert_speed = getVerS() - getWorld()->getPlayer()->getVerS();
-    //double new_y = getY() + vert_speed;
-    //double new_x = getX() + getHoriS();
-    //moveTo(new_x, new_y);
     moveSameHori();
-    if(getY() < 0 || getX() < 0 || getY() > VIEW_HEIGHT || getX() > VIEW_WIDTH){
-        notLive();
-    }
+    offScreen();
 }
 
 //Soul
 void Soul::doSomething()
 {
-    
+    moveSameHori();
+    if(offScreen())
+        return;
+    if(checkOverlap())
+    {
+        getWorld()->saveNewSoul();
+        notLive();
+        getWorld()->playSound(SOUND_GOT_SOUL);
+        getWorld()->increaseScore(100);
+    }
+    setDirection(getDirection()-10);
 }

@@ -25,7 +25,8 @@ protected:
     void notLive(){ liveState = false;};
     
     void moveSameHori();
-    //bool checkOverlap(Actor* cp);
+    bool offScreen();
+    bool checkOverlap();
 private:
     StudentWorld* m_world;
     bool liveState;

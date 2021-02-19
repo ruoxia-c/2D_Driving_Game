@@ -43,6 +43,7 @@ int StudentWorld::init()
         actors.push_back(pr);
     }
     lastWhiteY = (M-1)* (4*SPRITE_HEIGHT);
+    saveSoul = 0;
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -102,7 +103,7 @@ int StudentWorld::move()
     //Display
     int score = getScore();
     int level = getLevel();
-    int souls = 5;
+    int souls = saveSoul;
     int lives = getLives();
     int health = player->getHealth();
     int sprays = player->getSprays();

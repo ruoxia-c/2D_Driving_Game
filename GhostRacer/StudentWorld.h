@@ -18,10 +18,12 @@ public:
     virtual int move();
     virtual void cleanUp();
     GhostRacer* getPlayer(){ return player;};
+    void saveNewSoul(){ saveSoul++; };
 private:
     GhostRacer* player;
     list<Actor*> actors;
     double lastWhiteY;
+    int saveSoul;
     const double LEFT_EDGE = ROAD_CENTER - ROAD_WIDTH/2;
     const double RIGHT_EDGE = ROAD_CENTER + ROAD_WIDTH/2;
     bool addGoodies(int maxChance);
