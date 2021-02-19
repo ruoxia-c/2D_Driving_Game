@@ -22,18 +22,18 @@ void GhostRacer::doSomething()
     if(getX() <= ROAD_CENTER - ROAD_WIDTH/2){
         if(getDirection()>90){
             demageRacer(10);
-            setDirection(82);
-            getWorld()->playSound(SOUND_VEHICLE_CRASH);
-            moveAlgorithm();
         }
+        setDirection(82);
+        getWorld()->playSound(SOUND_VEHICLE_CRASH);
+        moveAlgorithm();
     }
     if(getX() >= ROAD_CENTER + ROAD_WIDTH/2){
         if(getDirection()<90){
             demageRacer(10);
-            setDirection(98);
-            getWorld()->playSound(SOUND_VEHICLE_CRASH);
-            moveAlgorithm();
         }
+        setDirection(98);
+        getWorld()->playSound(SOUND_VEHICLE_CRASH);
+        moveAlgorithm();
     }
     int ch;
     if(getWorld()->getKey(ch))
@@ -68,13 +68,18 @@ void GhostRacer::doSomething()
                 break;
         }
     }
+    else{
+        moveAlgorithm();
+    }
 }
 
 void GhostRacer::moveAlgorithm()
 {
+    static const double PI = 4 * atan(1.0);
     double max_shift_per_tick = 4.0;
     int direction = getDirection();
-    double delta_x = cos(direction) * max_shift_per_tick;
+    //int test = cos(direction);
+    double delta_x = cos(direction*PI/180) * max_shift_per_tick;
     double cur_x = getX();
     double cur_y = getY();
     moveTo(cur_x + delta_x, cur_y);
@@ -92,13 +97,15 @@ void GhostRacer::demageRacer(int hitPoint)
 //BorderLine
 void BorderLine::doSomething()
 {
-    desVerS(getWorld()->racerVerS());
-    int new_y = getY() + getVerS();
-    int new_x = getX() + getHoriS();
+    if(!isLive())
+        return;
+    //desVerS(getWorld()->getPlayer()->getVerS());
+    double vert_speed = getVerS() -getWorld()->getPlayer()->getVerS();
+    double new_y = getY() + vert_speed;
+    double new_x = getX() + getHoriS();
     moveTo(new_x, new_y);
     if(getY() < 0 || getX() < 0 || getY() > VIEW_HEIGHT || getX() > VIEW_WIDTH){
         notLive();
-        return;
     }
 }
 

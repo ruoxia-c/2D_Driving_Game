@@ -17,9 +17,7 @@ public:
     virtual int init();
     virtual int move();
     virtual void cleanUp();
-    int racerVerS(){ return player->getVerS();}
-    int racerHorS(){ return player->getHoriS();}
-
+    GhostRacer* getPlayer(){ return player;};
 private:
     GhostRacer* player;
     list<Actor*> actors;

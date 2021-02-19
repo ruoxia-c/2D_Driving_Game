@@ -8,7 +8,7 @@ class StudentWorld;
 class Actor:public GraphObject
 {
 public:
-    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp):
+    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, double vertSpeed, double horiSpeed, StudentWorld* cp):
     GraphObject(imageID, startX, startY, startDirection, size, depth),m_world(cp)
     {
         liveState = true;
@@ -16,26 +16,26 @@ public:
         horiSpeed = horiSpeed;
     }; //constructor
     virtual void doSomething(){};
-    virtual bool isYellowLine(){ return false;};
+    virtual bool isWhiteLine(){ return false;};
     bool isLive(){
         return liveState;
     }
-    int getHoriS(){ return horiSpeed;}
-    int getVerS(){ return vertSpeed;}
+    double getHoriS(){ return horiSpeed;}
+    double getVerS(){ return vertSpeed;}
 protected:
     StudentWorld* getWorld(){return m_world;}
-    void desHoriS(int chan){ horiSpeed = horiSpeed - chan;}
-    void insHoriS(int chan){ horiSpeed = horiSpeed + chan;}
-    void desVerS(int chan){ vertSpeed = vertSpeed - chan;}
-    void insVerS(int chan){ vertSpeed = vertSpeed + chan;}
+    void desHoriS(double chan){ horiSpeed = horiSpeed - chan;}
+    void insHoriS(double chan){ horiSpeed = horiSpeed + chan;}
+    void desVerS(double chan){ vertSpeed = vertSpeed - chan;}
+    void insVerS(double chan){ vertSpeed = vertSpeed + chan;}
     
     void notLive(){ liveState = false;};
     //bool checkOverlap(Actor* cp);
 private:
     StudentWorld* m_world;
     bool liveState;
-    int vertSpeed;
-    int horiSpeed;
+    double vertSpeed;
+    double horiSpeed;
 };
 
 class GhostRacer: public Actor
@@ -60,13 +60,13 @@ private:
 class BorderLine: public Actor
 {
 public:
-    BorderLine(int imageID, double startX, double startY,StudentWorld* cp, bool isYellow):
+    BorderLine(int imageID, double startX, double startY,StudentWorld* cp, bool isWhite):
     Actor(imageID, startX, startY,0,2.0,2,-4,0,cp)
-    { isYellow = isYellow;};
+    { isWhite = isWhite;};
     virtual void doSomething();
-    virtual bool isYellowLine(){ return isYellow;}
+    virtual bool isWhiteLine(){ return isWhite;}
 private:
-    bool isYellow;
+    bool isWhite;
 };
 
 #endif // ACTOR_H_
