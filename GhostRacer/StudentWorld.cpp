@@ -42,6 +42,7 @@ int StudentWorld::init()
         BorderLine* pr = new BorderLine(IID_WHITE_BORDER_LINE, RIGHT_EDGE - ROAD_WIDTH/3,j * (4*SPRITE_HEIGHT),this,true);
         actors.push_back(pr);
     }
+    lastWhiteY = (M-1)* (4*SPRITE_HEIGHT);
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -69,36 +70,29 @@ int StudentWorld::move()
     }
     
     //Add new BorderLine
-    int new_border_y = VIEW_HEIGHT - SPRITE_HEIGHT;
+    double new_border_y = VIEW_HEIGHT - SPRITE_HEIGHT;
     it = actors.end();
     for(; it!=actors.begin();){
         it--;
         if((*it)->isWhiteLine())
             break;
     }
-    int delta_y = new_border_y - (*it)->getY();
+    
+    lastWhiteY = lastWhiteY + (*it)->getVerS()-player->getVerS();
+    double delta_y = new_border_y - lastWhiteY;
+    //double delta_y = lastWhiteY;
     if(delta_y >= SPRITE_HEIGHT){
-        int N = VIEW_HEIGHT / SPRITE_HEIGHT;
-        for (int j=0; j<N;j++){
-            BorderLine* pr = new BorderLine(IID_YELLOW_BORDER_LINE, ROAD_CENTER - ROAD_WIDTH/2,new_border_y,this,false);
-            actors.push_back(pr);
-        }
-        for (int j=0; j<N;j++){
-            BorderLine* pr2 = new BorderLine(IID_YELLOW_BORDER_LINE, ROAD_CENTER + ROAD_WIDTH/2,new_border_y,this,false);
-            actors.push_back(pr2);
-        }
-        
+        BorderLine* pr = new BorderLine(IID_YELLOW_BORDER_LINE, ROAD_CENTER - ROAD_WIDTH/2,new_border_y,this,false);
+        actors.push_back(pr);
+        BorderLine* pr2 = new BorderLine(IID_YELLOW_BORDER_LINE, ROAD_CENTER + ROAD_WIDTH/2,new_border_y,this,false);
+        actors.push_back(pr2);
     }
     if(delta_y >= 4*SPRITE_HEIGHT){
-        int M = VIEW_HEIGHT / (4*SPRITE_HEIGHT);
-        for (int j=0; j<M;j++){
-            BorderLine* wh = new BorderLine(IID_WHITE_BORDER_LINE, ROAD_CENTER - ROAD_WIDTH / 2 + ROAD_WIDTH/3,new_border_y,this,true);
-            actors.push_back(wh);
-        }
-        for (int j=0; j<M;j++){
-            BorderLine* wh2 = new BorderLine(IID_WHITE_BORDER_LINE, ROAD_CENTER + ROAD_WIDTH / 2 - ROAD_WIDTH/3,new_border_y,this,true);
-            actors.push_back(wh2);
-        }
+        BorderLine* wh = new BorderLine(IID_WHITE_BORDER_LINE, ROAD_CENTER - ROAD_WIDTH / 2 + ROAD_WIDTH/3,new_border_y,this,true);
+        actors.push_back(wh);
+        BorderLine* wh2 = new BorderLine(IID_WHITE_BORDER_LINE, ROAD_CENTER + ROAD_WIDTH / 2 - ROAD_WIDTH/3,new_border_y,this,true);
+        actors.push_back(wh2);
+        lastWhiteY  = new_border_y;
     }
     
     //Display

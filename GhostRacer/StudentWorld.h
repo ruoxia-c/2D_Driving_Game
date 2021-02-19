@@ -21,6 +21,7 @@ public:
 private:
     GhostRacer* player;
     list<Actor*> actors;
+    double lastWhiteY;
 };
 
 #endif // STUDENTWORLD_H_
