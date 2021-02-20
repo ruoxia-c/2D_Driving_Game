@@ -122,8 +122,10 @@ void BorderLine::doSomething()
 void Goodies::doSomething()
 {
     moveSameHori();
-    if(offScreen())
+    if(offScreen()){
+        notLive();
         return;
+    }
     if(checkOverlap(getWorld()->getPlayer()))
     {
         notLive();
@@ -148,4 +150,10 @@ void Soul::otherDiff()
 void Healing::overDiff()
 {
     getWorld()->getPlayer()->changeHealth(10);
+}
+
+//Holy Water
+void HolyWater::overDiff()
+{
+    getWorld()->getPlayer()->changeWater(10);
 }

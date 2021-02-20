@@ -97,8 +97,9 @@ int StudentWorld::move()
     //add soul goodies
     int ChanceOfLostSoul = 100;
     if(addGoodies(ChanceOfLostSoul)){
-        //actors.push_back(new Soul(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
+        actors.push_back(new Soul(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
     }
+    
     
     //Display
     int score = getScore();

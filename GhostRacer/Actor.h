@@ -24,7 +24,7 @@ protected:
     void setVerS(int chan){ vertSpeed = vertSpeed + chan;}
     void notLive(){ liveState = false;};
     
-    void moveSameHori();
+    void moveSameHori(); //only vertical speed change
     bool offScreen();
     bool checkOverlap(Actor* cp);
 private:
@@ -48,6 +48,7 @@ public:
     int getHealth(){ return health;};
     int getSprays(){ return holyWater;};
     void changeHealth(int val){ health = health + val;};
+    void changeWater(int val){ holyWater = holyWater+val;};
 private:
     void moveAlgorithm();
     int holyWater;
@@ -76,8 +77,8 @@ public:
 private:
     int playSound;
     int inScore;
-    virtual void overDiff()=0;
-    virtual void otherDiff()=0;
+    virtual void overDiff()=0; //different thing when overlap with player
+    virtual void otherDiff()=0; //other different thing
 };
 
 class Soul: public Goodies
@@ -86,7 +87,6 @@ public:
     Soul(double startX, double startY,StudentWorld* cp):
     Goodies(IID_SOUL_GOODIE,startX, startY,0,4.0,2,-4,0,cp,SOUND_GOT_SOUL,100)
     {}
-    virtual void doSomething();
 private:
     virtual void overDiff();
     virtual void otherDiff();
@@ -102,4 +102,17 @@ private:
     virtual void overDiff();
     virtual void otherDiff(){};
 };
+
+class HolyWater: public Goodies
+{
+public:
+    HolyWater(double startX, double startY,StudentWorld* cp):
+    Goodies(IID_HOLY_WATER_GOODIE,startX, startY,90,2.0,2,-4,0,cp,SOUND_GOT_GOODIE,50)
+    {};
+private:
+    virtual void overDiff();
+    virtual void otherDiff(){};
+};
+
+
 #endif // ACTOR_H_
