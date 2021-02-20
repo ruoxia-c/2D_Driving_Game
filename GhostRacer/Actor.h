@@ -127,4 +127,20 @@ private:
     virtual void otherDiff(){};
 };
 
+//pedestrians
+class HumanPed: public Actor
+{
+public:
+    HumanPed(double startX, double startY,StudentWorld* cp):
+    Actor(IID_HUMAN_PED,startX, startY,0,2.0,0,-4,0,cp,true)
+    {
+        planMove = 0;
+        hitPoint = 2;
+    }
+    virtual void doSomething();
+private:
+    int planMove;
+    int hitPoint;
+};
+
 #endif // ACTOR_H_

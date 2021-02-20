@@ -184,3 +184,36 @@ void OilSlick::overDiff()
 {
     getWorld()->getPlayer()->spun();
 }
+
+//Human
+void HumanPed::doSomething()
+{
+    if(!isLive())
+        return;
+    if(checkOverlap(getWorld()->getPlayer())){
+        getWorld()->decLives();
+        return;
+    }
+    moveSameHori();
+    if(offScreen()){
+        notLive();
+        return;
+    }
+    planMove--;
+    if(planMove>0)
+        return;
+    //pick new movement plan
+    int newHori = randInt(-3, 3);
+    while(newHori==0){
+        newHori = randInt(-3, 3);
+    }
+    setHoriS(-getHoriS());//horispeed change to 0
+    setHoriS(newHori);//set speed to the new speed
+    planMove = randInt(4, 32);
+    if(getHoriS()>0){
+        setDirection(180);
+    }
+    else if(getHoriS()<0){
+        setDirection(0);
+    }
+}

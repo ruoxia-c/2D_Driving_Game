@@ -26,7 +26,7 @@ private:
     int saveSoul;
     const double LEFT_EDGE = ROAD_CENTER - ROAD_WIDTH/2;
     const double RIGHT_EDGE = ROAD_CENTER + ROAD_WIDTH/2;
-    bool addGoodies(int maxChance);
+    bool addActor(int maxChance);
 };
 
 #endif // STUDENTWORLD_H_

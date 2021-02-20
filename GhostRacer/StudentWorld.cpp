@@ -51,14 +51,19 @@ int StudentWorld::move()
 {
     // This code is here merely to allow the game to build, run, and terminate after you hit enter.
     // Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
-    int level = getLevel();
-    
     player->doSomething();
-    
+    int level = getLevel();
+    int lives = getLives();
     list<Actor*>:: iterator it;
     for(it = actors.begin(); it!=actors.end();it++){
         if((*it)->isLive()){
             (*it)->doSomething();
+            if(player->getHealth()<=0)
+                return GWSTATUS_PLAYER_DIED;
+            if(getLives()<lives)
+                return GWSTATUS_PLAYER_DIED;
+            if(saveSoul == 2*level+5)
+                return GWSTATUS_FINISHED_LEVEL;
         }
     }
     
@@ -71,7 +76,7 @@ int StudentWorld::move()
         else
             it++;
     }
-    
+
     //Add new BorderLine
     double new_border_y = VIEW_HEIGHT - SPRITE_HEIGHT;
     for(it = actors.end(); it!=actors.begin();){
@@ -79,7 +84,6 @@ int StudentWorld::move()
         if((*it)->isWhiteLine())
             break;
     }
-    
     lastWhiteY = lastWhiteY + (*it)->getVerS()-player->getVerS();
     double delta_y = new_border_y - lastWhiteY;
     //double delta_y = lastWhiteY;
@@ -96,21 +100,24 @@ int StudentWorld::move()
         actors.push_back(wh2);
         lastWhiteY  = new_border_y;
     }
+    
     //add goodies
     int ChanceOfLostSoul = 100;
-    if(addGoodies(ChanceOfLostSoul)){
+    if(addActor(ChanceOfLostSoul)){
         actors.push_back(new Soul(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
     }
     int ChanceOilSlick = max(150-level * 10, 40);
-    if(addGoodies(ChanceOilSlick)){
+    if(addActor(ChanceOilSlick)){
         actors.push_back(new OilSlick(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
     }
-    
+    int ChanceHumanPed = max(200-level * 10, 30);
+    if(addActor(ChanceHumanPed)){
+        actors.push_back(new HumanPed(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
+    }
     
     //Display
     int score = getScore();
     int souls = saveSoul;
-    int lives = getLives();
     int health = player->getHealth();
     int sprays = player->getSprays();
     int bonus = 0;
@@ -136,9 +143,9 @@ StudentWorld::~StudentWorld()
     cleanUp();
 }
 
-bool StudentWorld::addGoodies(int maxChance)
+bool StudentWorld::addActor(int maxChance)
 {
-    int chance = randInt(0, maxChance);
+    int chance = randInt(0, maxChance-1);
     if(chance == 0){
         return true;
     }
