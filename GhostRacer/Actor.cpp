@@ -109,6 +109,26 @@ void GhostRacer::demageRacer(int hitPoint)
     }
 }
 
+void GhostRacer::spun()
+{
+    int nowDir = getDirection();
+    bool changed = false;
+    
+    while(!changed){
+        int changeDir = randInt(5, 20);
+        if(nowDir-changeDir >=60){
+            setDirection(nowDir-changeDir);
+            return;
+        }
+        else if(nowDir + changeDir <=120){
+            setDirection(nowDir+changeDir);
+            return;
+        }
+        else
+            changed = false;
+    }
+}
+
 //BorderLine
 void BorderLine::doSomething()
 {
@@ -128,7 +148,8 @@ void Goodies::doSomething()
     }
     if(checkOverlap(getWorld()->getPlayer()))
     {
-        notLive();
+        if(!isOil)
+            notLive();
         getWorld()->playSound(playSound);
         getWorld()->increaseScore(inScore);
         overDiff();
@@ -156,4 +177,10 @@ void Healing::overDiff()
 void HolyWater::overDiff()
 {
     getWorld()->getPlayer()->changeWater(10);
+}
+
+//Oil slick
+void OilSlick::overDiff()
+{
+    getWorld()->getPlayer()->spun();
 }

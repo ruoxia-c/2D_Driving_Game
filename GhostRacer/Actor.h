@@ -47,6 +47,7 @@ public:
     void demageRacer(int hitPoint);
     int getHealth(){ return health;};
     int getSprays(){ return holyWater;};
+    void spun();
     void changeHealth(int val){ health = health + val;};
     void changeWater(int val){ holyWater = holyWater+val;};
 private:
@@ -70,11 +71,12 @@ private:
 class Goodies: public Actor
 {
 public:
-    Goodies(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,int playSound,int increaseScor):
-    Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true),playSound(playSound),inScore(increaseScor)
+    Goodies(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,int playSound,int increaseScor,bool isOil):
+    Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true),playSound(playSound),inScore(increaseScor),isOil(isOil)
     {};
     virtual void doSomething();
 private:
+    bool isOil;
     int playSound;
     int inScore;
     virtual void overDiff()=0; //different thing when overlap with player
@@ -85,7 +87,7 @@ class Soul: public Goodies
 {
 public:
     Soul(double startX, double startY,StudentWorld* cp):
-    Goodies(IID_SOUL_GOODIE,startX, startY,0,4.0,2,-4,0,cp,SOUND_GOT_SOUL,100)
+    Goodies(IID_SOUL_GOODIE,startX, startY,0,4.0,2,-4,0,cp,SOUND_GOT_SOUL,100,false)
     {}
 private:
     virtual void overDiff();
@@ -96,7 +98,7 @@ class Healing: public Goodies
 {
 public:
     Healing(double startX, double startY,StudentWorld* cp):
-    Goodies(IID_HEAL_GOODIE,startX, startY,0,1.0,2,-4,0,cp,SOUND_GOT_GOODIE,250)
+    Goodies(IID_HEAL_GOODIE,startX, startY,0,1.0,2,-4,0,cp,SOUND_GOT_GOODIE,250,false)
     {};
 private:
     virtual void overDiff();
@@ -107,12 +109,22 @@ class HolyWater: public Goodies
 {
 public:
     HolyWater(double startX, double startY,StudentWorld* cp):
-    Goodies(IID_HOLY_WATER_GOODIE,startX, startY,90,2.0,2,-4,0,cp,SOUND_GOT_GOODIE,50)
+    Goodies(IID_HOLY_WATER_GOODIE,startX, startY,90,2.0,2,-4,0,cp,SOUND_GOT_GOODIE,50,false)
     {};
 private:
     virtual void overDiff();
     virtual void otherDiff(){};
 };
 
+class OilSlick: public Goodies
+{
+public:
+    OilSlick(double startX, double startY,StudentWorld* cp):
+    Goodies(IID_OIL_SLICK, startX, startY, 0,randInt(2,5),2,-4,0,cp,SOUND_OIL_SLICK,0,true)
+    {};
+private:
+    virtual void overDiff();
+    virtual void otherDiff(){};
+};
 
 #endif // ACTOR_H_

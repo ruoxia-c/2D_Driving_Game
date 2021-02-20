@@ -51,6 +51,8 @@ int StudentWorld::move()
 {
     // This code is here merely to allow the game to build, run, and terminate after you hit enter.
     // Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
+    int level = getLevel();
+    
     player->doSomething();
     
     list<Actor*>:: iterator it;
@@ -94,16 +96,19 @@ int StudentWorld::move()
         actors.push_back(wh2);
         lastWhiteY  = new_border_y;
     }
-    //add soul goodies
+    //add goodies
     int ChanceOfLostSoul = 100;
     if(addGoodies(ChanceOfLostSoul)){
         actors.push_back(new Soul(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
+    }
+    int ChanceOilSlick = max(150-level * 10, 40);
+    if(addGoodies(ChanceOilSlick)){
+        actors.push_back(new OilSlick(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
     }
     
     
     //Display
     int score = getScore();
-    int level = getLevel();
     int souls = saveSoul;
     int lives = getLives();
     int health = player->getHealth();
