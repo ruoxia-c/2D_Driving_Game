@@ -114,6 +114,10 @@ int StudentWorld::move()
     if(addActor(ChanceHumanPed)){
         actors.push_back(new HumanPed(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
     }
+    int ChanceZombiePed = max(100-level * 10, 20);
+    if(addActor(ChanceZombiePed)){
+        actors.push_back(new ZombiePed(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
+    }
     
     //Display
     int score = getScore();
@@ -150,4 +154,9 @@ bool StudentWorld::addActor(int maxChance)
         return true;
     }
     return false;
+}
+
+void StudentWorld::addHealing(Actor* cp)
+{
+    actors.push_back(new Healing(cp->getX(),cp->getY(),this));
 }

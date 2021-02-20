@@ -185,15 +185,16 @@ void OilSlick::overDiff()
     getWorld()->getPlayer()->spun();
 }
 
-//Human
-void HumanPed::doSomething()
+//Pedestrain
+void Pedestrain::doSomething()
 {
     if(!isLive())
         return;
     if(checkOverlap(getWorld()->getPlayer())){
-        getWorld()->decLives();
+        overDiff();
         return;
     }
+    otherDiff();
     moveSameHori();
     if(offScreen()){
         notLive();
@@ -210,10 +211,61 @@ void HumanPed::doSomething()
     setHoriS(-getHoriS());//horispeed change to 0
     setHoriS(newHori);//set speed to the new speed
     planMove = randInt(4, 32);
-    if(getHoriS()>0){
+    if(getHoriS()<0){
         setDirection(180);
     }
-    else if(getHoriS()<0){
+    else if(getHoriS()>0){
         setDirection(0);
     }
 }
+
+void HumanPed::overDiff()
+{
+    getWorld()->decLives();
+}
+
+void ZombiePed::overDiff()
+{
+    getWorld()->getPlayer()->demageRacer(5);
+    demagePed(5,true);
+}
+void ZombiePed::otherDiff()
+{
+    double racerX = getWorld()->getPlayer()->getX();
+    double racerY = getWorld()->getPlayer()->getY();
+    if(getX()>=racerX-30 && getX()<=racerX+30 && getY()>racerY){
+        setDirection(270);
+        if(getX()<racerX){
+            setHoriS(-getHoriS());
+            setHoriS(1);
+        }
+        else if(getX()>racerX){
+            setHoriS(-getHoriS());
+            setHoriS(-1);
+        }
+        else{
+            setHoriS(-getHoriS());
+        }
+            
+    }
+}
+
+void ZombiePed::demagePed(int hit,bool racer)
+{
+    demage(hit);
+    if(getPoint()<=0){
+        notLive();
+        getWorld()->playSound(SOUND_PED_DIE);
+        if(!racer && randInt(1, 5)==1){
+            getWorld()->addHealing(this);
+        }
+        getWorld()->increaseScore(150);
+    }
+    getWorld()->playSound(SOUND_PED_HURT);
+    tickGrunt--;
+    if(tickGrunt<=0){
+        getWorld()->playSound(SOUND_ZOMBIE_ATTACK);
+        tickGrunt=20;
+    }
+}
+

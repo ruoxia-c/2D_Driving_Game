@@ -19,6 +19,7 @@ public:
     virtual void cleanUp();
     GhostRacer* getPlayer(){ return player;};
     void saveNewSoul(){ saveSoul++; };
+    void addHealing(Actor* cp);
 private:
     GhostRacer* player;
     list<Actor*> actors;

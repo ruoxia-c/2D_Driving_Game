@@ -128,19 +128,44 @@ private:
 };
 
 //pedestrians
-class HumanPed: public Actor
+class Pedestrain: public Actor
+{
+public:
+    Pedestrain(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,int planMove,int hitPoint):
+    Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true),planMove(planMove),hitPoint(hitPoint)
+    {};
+    virtual void doSomething();
+    void demage(int hit){ hitPoint = hitPoint-hit;};
+    int getPoint(){ return hitPoint;};
+private:
+    virtual void overDiff()=0;
+    virtual void otherDiff()=0;
+    int planMove;
+    int hitPoint;
+};
+
+class HumanPed: public Pedestrain
 {
 public:
     HumanPed(double startX, double startY,StudentWorld* cp):
-    Actor(IID_HUMAN_PED,startX, startY,0,2.0,0,-4,0,cp,true)
-    {
-        planMove = 0;
-        hitPoint = 2;
-    }
-    virtual void doSomething();
+    Pedestrain(IID_HUMAN_PED, startX, startY, 0, 2.0, 0, -4, 0, cp, 0, 2)
+    {}
 private:
-    int planMove;
-    int hitPoint;
+    virtual void overDiff();
+    virtual void otherDiff(){};
+};
+
+class ZombiePed:public Pedestrain
+{
+public:
+    ZombiePed(double startX, double startY,StudentWorld* cp):
+    Pedestrain(IID_ZOMBIE_PED,startX, startY,0,3.0,0,-4,0,cp,0,2)
+    { tickGrunt = 0;}
+private:
+    int tickGrunt;
+    virtual void overDiff();
+    virtual void otherDiff();
+    void demagePed(int hit,bool racer);
 };
 
 #endif // ACTOR_H_
