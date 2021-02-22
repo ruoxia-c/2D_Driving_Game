@@ -16,6 +16,7 @@ public:
     bool isLive(){
         return liveState;
     }
+    int onWhichLean();
     int getHoriS(){ return horiSpeed;}
     int getVerS(){ return vertSpeed;}
     bool needAvoid(){return worthAvoid;};
@@ -133,8 +134,8 @@ private:
 class Pedestrain: public Actor
 {
 public:
-    Pedestrain(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,int planMove,int hitPoint):
-    Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true,true),planMove(planMove),hitPoint(hitPoint)
+    Pedestrain(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,int planMove,int hitPoint,bool isCab):
+    Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true,true),planMove(planMove),hitPoint(hitPoint),isCab(isCab)
     {};
     virtual void doSomething();
     void demage(int hit){ hitPoint = hitPoint-hit;};
@@ -143,15 +144,18 @@ private:
     virtual void overDiff()=0;
     virtual void zombiePedDiff()=0;
     virtual void cabDiff()=0;
+    void PedPlan();
+    void CabPlan();
     int planMove;
     int hitPoint;
+    bool isCab;
 };
 
 class HumanPed: public Pedestrain
 {
 public:
     HumanPed(double startX, double startY,StudentWorld* cp):
-    Pedestrain(IID_HUMAN_PED, startX, startY, 0, 2.0, 0, -4, 0, cp, 0, 2)
+    Pedestrain(IID_HUMAN_PED, startX, startY, 0, 2.0, 0, -4, 0, cp, 0, 2,false)
     {}
 private:
     virtual void overDiff();
@@ -163,13 +167,14 @@ class ZombiePed:public Pedestrain
 {
 public:
     ZombiePed(double startX, double startY,StudentWorld* cp):
-    Pedestrain(IID_ZOMBIE_PED,startX, startY,0,3.0,0,-4,0,cp,0,2)
+    Pedestrain(IID_ZOMBIE_PED,startX, startY,0,3.0,0,-4,0,cp,0,2,false)
     { tickGrunt = 0;}
 private:
     int tickGrunt;
     virtual void overDiff();
     virtual void zombiePedDiff();
     virtual void cabDiff(){};
+    
     void demagePed(int hit,bool racer);
 };
 
@@ -177,12 +182,13 @@ class ZombieCab: public Pedestrain
 {
 public:
     ZombieCab(double startX, double startY,StudentWorld* cp):
-    Pedestrain(IID_ZOMBIE_CAB,startX, startY,90,4.0,0,0,0,cp,0,3)
+    Pedestrain(IID_ZOMBIE_CAB,startX, startY,90,4.0,0,0,0,cp,0,3,true)
     { damagedRacer = false;}
 private:
     virtual void overDiff();
     virtual void zombiePedDiff(){};
     virtual void cabDiff();
+    
     bool damagedRacer;
 };
 

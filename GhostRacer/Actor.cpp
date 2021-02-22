@@ -30,6 +30,18 @@ bool Actor::checkOverlap(Actor* cp)
     return false;
 }
 
+int Actor::onWhichLean()
+{
+    double LEFT_EDGE = ROAD_CENTER - ROAD_WIDTH/2;
+    double RIGHT_EDGE = ROAD_CENTER + ROAD_WIDTH/2;
+    if(getX()>=LEFT_EDGE && getX()<LEFT_EDGE + ROAD_WIDTH/3)
+        return 1;
+    else if(getX()>=LEFT_EDGE + ROAD_WIDTH/3 && getX()< RIGHT_EDGE - ROAD_WIDTH/3)
+        return 2;
+    else
+        return 3;
+}
+
 //GhostRacer
 void GhostRacer::doSomething()
 {
@@ -204,6 +216,13 @@ void Pedestrain::doSomething()
     planMove--;
     if(planMove>0)
         return;
+    if(isCab)
+        CabPlan();
+    else
+        PedPlan();
+}
+
+void Pedestrain::PedPlan(){
     //pick new movement plan
     int newHori = randInt(-3, 3);
     while(newHori==0){
@@ -218,6 +237,11 @@ void Pedestrain::doSomething()
     else if(getHoriS()>0){
         setDirection(0);
     }
+}
+
+void Pedestrain::CabPlan(){
+    planMove = randInt(4, 32);
+    setVerS(randInt(-2, 2));
 }
 
 void HumanPed::overDiff()
@@ -291,5 +315,13 @@ void ZombieCab::overDiff()
 
 void ZombieCab::cabDiff()
 {
-    
+    if((getVerS()>getWorld()->getPlayer()->getVerS()) && (getWorld()->avoidActor(this)!=this)&&(getWorld()->avoidActor(this)->getY()<(getY()+96))){
+        setVerS(-0.5);
+        return;
+    }
+    if((getVerS()<=getWorld()->getPlayer()->getVerS()) && (getWorld()->avoidActor(this)!=this)&&(getWorld()->avoidActor(this)->getY()>(getY()-96))&&(getWorld()->avoidActor(this)!=getWorld()->getPlayer())){
+        setVerS(0.5);
+        return;
+    }
 }
+

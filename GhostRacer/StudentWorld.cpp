@@ -165,7 +165,13 @@ void StudentWorld::addHealing(Actor* cp)
     actors.push_back(new Healing(cp->getX(),cp->getY(),this));
 }
 
-Actor* StudentWorld::avoidActor(Actor* Cab)
+Actor* StudentWorld::avoidActor(Actor* cab)
 {
-    
+    list<Actor*>:: iterator it;
+    for(it = actors.begin(); it!=actors.end();it++){
+        if(((*it)->needAvoid()) && (cab->onWhichLean()==(*it)->onWhichLean()) && ((*it)->getY()>cab->getY())){
+            return *it;
+        }
+    }
+    return cab;
 }

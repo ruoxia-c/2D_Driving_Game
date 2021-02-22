@@ -20,7 +20,7 @@ public:
     GhostRacer* getPlayer(){ return player;};
     void saveNewSoul(){ saveSoul++; };
     void addHealing(Actor* cp);
-    Actor* avoidActor(Actor* Cab);
+    Actor* avoidActor(Actor* cab);
 private:
     GhostRacer* player;
     list<Actor*> actors;
