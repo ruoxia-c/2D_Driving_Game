@@ -20,7 +20,9 @@ public:
     GhostRacer* getPlayer(){ return player;};
     void saveNewSoul(){ saveSoul++; };
     void addHealing(Actor* cp);
+    void addOil(Actor* cp);
     Actor* avoidActor(int lane,double Ycoord);
+    Actor* waterOverlap(Actor* cp);
 private:
     GhostRacer* player;
     list<Actor*> actors;

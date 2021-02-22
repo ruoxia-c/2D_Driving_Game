@@ -244,15 +244,43 @@ void Pedestrain::CabPlan(){
     setVerS(randInt(-2, 2));
 }
 
+void Pedestrain::demageZombie(int hit, bool racer, int sound_hurt, int sound_died,bool ped, int points)
+{
+    hitPoint = hitPoint-hit;
+    if(getPoint()<=0){
+        notLive();
+        getWorld()->playSound(sound_died);
+        if(!racer && randInt(1, 5)==1){
+            if(ped)
+                getWorld()->addHealing(this);
+            else
+                getWorld()->addOil(this);
+        }
+        getWorld()->increaseScore(points);
+        return;
+    }
+    getWorld()->playSound(sound_hurt);
+}
+
+//Human
 void HumanPed::overDiff()
 {
     getWorld()->decLives();
 }
 
+void HumanPed::damageByWater()
+{
+    setHoriS(-getHoriS()+(-1*getHoriS()));
+    //need to double check
+    setDirection(getDirection()+180);
+    getWorld()->playSound(SOUND_PED_HURT);
+}
+
+//zombie
 void ZombiePed::overDiff()
 {
     getWorld()->getPlayer()->demageRacer(5);
-    demagePed(5,true);
+    demageZombie(5, true, SOUND_PED_HURT, SOUND_PED_DIE, true, 150);
 }
 void ZombiePed::zombiePedDiff()
 {
@@ -262,36 +290,23 @@ void ZombiePed::zombiePedDiff()
         setDirection(270);
         if(getX()<racerX){
             setHoriS(-getHoriS()+1);
-            //setHoriS(1);
         }
         else if(getX()>racerX){
             setHoriS(-getHoriS()-1);
-            //setHoriS(-1);
         }
         else{
             setHoriS(-getHoriS());
         }
-            
+        if(tickGrunt<=0){
+            getWorld()->playSound(SOUND_ZOMBIE_ATTACK);
+            tickGrunt=20;
+        }
     }
 }
 
-void ZombiePed::demagePed(int hit,bool racer)
+void ZombiePed::damageByWater()
 {
-    demage(hit);
-    if(getPoint()<=0){
-        notLive();
-        getWorld()->playSound(SOUND_PED_DIE);
-        if(!racer && randInt(1, 5)==1){
-            getWorld()->addHealing(this);
-        }
-        getWorld()->increaseScore(150);
-    }
-    getWorld()->playSound(SOUND_PED_HURT);
-    tickGrunt--;
-    if(tickGrunt<=0){
-        getWorld()->playSound(SOUND_ZOMBIE_ATTACK);
-        tickGrunt=20;
-    }
+    demageZombie(1, false, SOUND_PED_HURT, SOUND_PED_DIE, true, 150);
 }
 
 //zombie cab
@@ -327,3 +342,30 @@ void ZombieCab::cabDiff()
     }
 }
 
+void ZombieCab::damageByWater()
+{
+    demageZombie(1, false, SOUND_VEHICLE_HURT, SOUND_VEHICLE_DIE, false, 200);
+}
+
+//Projectile
+void Projectile::doSomething()
+{
+    if(!isLive())
+        return;
+    //Check active
+    if(getWorld()->waterOverlap(this)!=nullptr){
+        getWorld()->waterOverlap(this)->damageByWater();
+        notLive();
+        return;
+    }
+    moveForward(SPRITE_HEIGHT);
+    moved = moved + SPRITE_HEIGHT;
+    if(offScreen()){
+        notLive();
+        return;
+    }
+    if(moved >= maxDis){
+        notLive();
+        return;
+    }
+}

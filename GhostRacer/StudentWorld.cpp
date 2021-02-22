@@ -166,6 +166,16 @@ Actor* StudentWorld::avoidActor(int lane,double Ycoord)
     return nullptr;
 }
 
+Actor* StudentWorld::waterOverlap(Actor *cp)
+{
+    list<Actor*>:: iterator it;
+    for(it = actors.begin(); it!=actors.end();it++){
+        if((*it)->projectAffect() && (*it)->checkOverlap(cp))
+            return *it;
+    }
+    return nullptr;
+}
+
 bool StudentWorld::addActor(int maxChance)
 {
     int chance = randInt(0, maxChance-1);
@@ -178,6 +188,10 @@ bool StudentWorld::addActor(int maxChance)
 void StudentWorld::addHealing(Actor* cp)
 {
     actors.push_back(new Healing(cp->getX(),cp->getY(),this));
+}
+void StudentWorld::addOil(Actor* cp)
+{
+    actors.push_back(new OilSlick(cp->getX(),cp->getY(),this));
 }
 
 void StudentWorld::addCab()
@@ -209,4 +223,5 @@ double StudentWorld::centerOfLane(int lane)
     else
         return ROAD_CENTER + ROAD_WIDTH/3;
 }
-           
+
+
