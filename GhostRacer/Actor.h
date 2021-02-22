@@ -8,8 +8,8 @@ class StudentWorld;
 class Actor:public GraphObject
 {
 public:
-    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,bool alive):
-    GraphObject(imageID, startX, startY, startDirection, size, depth),m_world(cp),vertSpeed(vertSpeed),horiSpeed(horiSpeed),liveState(alive)
+    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,bool alive,bool worthAviod):
+    GraphObject(imageID, startX, startY, startDirection, size, depth),m_world(cp),vertSpeed(vertSpeed),horiSpeed(horiSpeed),liveState(alive),worthAvoid(worthAviod)
     { }; //constructor
     virtual void doSomething()=0;
     virtual bool isWhiteLine(){ return false;};
@@ -18,6 +18,7 @@ public:
     }
     int getHoriS(){ return horiSpeed;}
     int getVerS(){ return vertSpeed;}
+    bool needAvoid(){return worthAvoid;};
 protected:
     StudentWorld* getWorld(){return m_world;}
     void setHoriS(int chan){ horiSpeed = horiSpeed + chan;}
@@ -32,13 +33,14 @@ private:
     bool liveState;
     int vertSpeed;
     int horiSpeed;
+    bool worthAvoid;
 };
 
 class GhostRacer: public Actor
 {
 public:
     GhostRacer(StudentWorld* cp):
-    Actor(IID_GHOST_RACER,128,32,90,4.0,0,0,0,cp,true)
+    Actor(IID_GHOST_RACER,128,32,90,4.0,0,0,0,cp,true,true)
     {
         holyWater = 10;
         health = 100;
@@ -60,7 +62,7 @@ class BorderLine: public Actor
 {
 public:
     BorderLine(int imageID, double startX, double startY,StudentWorld* cp, bool isWhite):
-    Actor(imageID, startX, startY,0,2.0,2,-4,0,cp,true)
+    Actor(imageID, startX, startY,0,2.0,2,-4,0,cp,true,false)
     { isWhite = isWhite;};
     virtual void doSomething();
     virtual bool isWhiteLine(){ return isWhite;}
@@ -72,7 +74,7 @@ class Goodies: public Actor
 {
 public:
     Goodies(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,int playSound,int increaseScor,bool isOil):
-    Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true),playSound(playSound),inScore(increaseScor),isOil(isOil)
+    Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true,false),playSound(playSound),inScore(increaseScor),isOil(isOil)
     {};
     virtual void doSomething();
 private:
@@ -132,14 +134,15 @@ class Pedestrain: public Actor
 {
 public:
     Pedestrain(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,int planMove,int hitPoint):
-    Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true),planMove(planMove),hitPoint(hitPoint)
+    Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true,true),planMove(planMove),hitPoint(hitPoint)
     {};
     virtual void doSomething();
     void demage(int hit){ hitPoint = hitPoint-hit;};
     int getPoint(){ return hitPoint;};
 private:
     virtual void overDiff()=0;
-    virtual void otherDiff()=0;
+    virtual void zombiePedDiff()=0;
+    virtual void cabDiff()=0;
     int planMove;
     int hitPoint;
 };
@@ -152,7 +155,8 @@ public:
     {}
 private:
     virtual void overDiff();
-    virtual void otherDiff(){};
+    virtual void zombiePedDiff(){};
+    virtual void cabDiff(){};
 };
 
 class ZombiePed:public Pedestrain
@@ -164,8 +168,22 @@ public:
 private:
     int tickGrunt;
     virtual void overDiff();
-    virtual void otherDiff();
+    virtual void zombiePedDiff();
+    virtual void cabDiff(){};
     void demagePed(int hit,bool racer);
+};
+
+class ZombieCab: public Pedestrain
+{
+public:
+    ZombieCab(double startX, double startY,StudentWorld* cp):
+    Pedestrain(IID_ZOMBIE_CAB,startX, startY,90,4.0,0,0,0,cp,0,3)
+    { damagedRacer = false;}
+private:
+    virtual void overDiff();
+    virtual void zombiePedDiff(){};
+    virtual void cabDiff();
+    bool damagedRacer;
 };
 
 #endif // ACTOR_H_

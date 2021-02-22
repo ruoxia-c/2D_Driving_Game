@@ -194,12 +194,13 @@ void Pedestrain::doSomething()
         overDiff();
         return;
     }
-    otherDiff();
+    zombiePedDiff();
     moveSameHori();
     if(offScreen()){
         notLive();
         return;
     }
+    cabDiff();
     planMove--;
     if(planMove>0)
         return;
@@ -229,19 +230,19 @@ void ZombiePed::overDiff()
     getWorld()->getPlayer()->demageRacer(5);
     demagePed(5,true);
 }
-void ZombiePed::otherDiff()
+void ZombiePed::zombiePedDiff()
 {
     double racerX = getWorld()->getPlayer()->getX();
     double racerY = getWorld()->getPlayer()->getY();
     if(getX()>=racerX-30 && getX()<=racerX+30 && getY()>racerY){
         setDirection(270);
         if(getX()<racerX){
-            setHoriS(-getHoriS());
-            setHoriS(1);
+            setHoriS(-getHoriS()+1);
+            //setHoriS(1);
         }
         else if(getX()>racerX){
-            setHoriS(-getHoriS());
-            setHoriS(-1);
+            setHoriS(-getHoriS()-1);
+            //setHoriS(-1);
         }
         else{
             setHoriS(-getHoriS());
@@ -269,3 +270,26 @@ void ZombiePed::demagePed(int hit,bool racer)
     }
 }
 
+//zombie cab
+void ZombieCab::overDiff()
+{
+    if(damagedRacer)
+        return;
+    getWorld()->playSound(SOUND_VEHICLE_CRASH);
+    getWorld()->getPlayer()->demageRacer(20);
+    double racerX = getWorld()->getPlayer()->getX();
+    if(getX()<= racerX){
+        setHoriS(-getHoriS()-5);
+        setDirection(120 + randInt(0, 19));
+    }
+    else{
+        setHoriS(-getHoriS()+5);
+        setDirection(60 - randInt(0, 19));
+    }
+    damagedRacer = true;
+}
+
+void ZombieCab::cabDiff()
+{
+    
+}

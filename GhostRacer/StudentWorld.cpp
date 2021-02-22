@@ -110,6 +110,10 @@ int StudentWorld::move()
     if(addActor(ChanceOilSlick)){
         actors.push_back(new OilSlick(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
     }
+    int ChanceOfHolyWater = 100 + 10 * level;
+    if(addActor(ChanceOfHolyWater)){
+        actors.push_back(new HolyWater (randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
+    }
     int ChanceHumanPed = max(200-level * 10, 30);
     if(addActor(ChanceHumanPed)){
         actors.push_back(new HumanPed(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
@@ -159,4 +163,9 @@ bool StudentWorld::addActor(int maxChance)
 void StudentWorld::addHealing(Actor* cp)
 {
     actors.push_back(new Healing(cp->getX(),cp->getY(),this));
+}
+
+Actor* StudentWorld::avoidActor(Actor* Cab)
+{
+    
 }
