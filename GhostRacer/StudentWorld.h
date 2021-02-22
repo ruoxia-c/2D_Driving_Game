@@ -20,7 +20,7 @@ public:
     GhostRacer* getPlayer(){ return player;};
     void saveNewSoul(){ saveSoul++; };
     void addHealing(Actor* cp);
-    Actor* avoidActor(Actor* cab);
+    Actor* avoidActor(int lane,double Ycoord);
 private:
     GhostRacer* player;
     list<Actor*> actors;
@@ -29,6 +29,8 @@ private:
     const double LEFT_EDGE = ROAD_CENTER - ROAD_WIDTH/2;
     const double RIGHT_EDGE = ROAD_CENTER + ROAD_WIDTH/2;
     bool addActor(int maxChance);
+    void addCab();
+    double centerOfLane(int lane);
 };
 
 #endif // STUDENTWORLD_H_

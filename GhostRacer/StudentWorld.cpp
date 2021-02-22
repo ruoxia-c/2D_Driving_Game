@@ -122,6 +122,10 @@ int StudentWorld::move()
     if(addActor(ChanceZombiePed)){
         actors.push_back(new ZombiePed(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
     }
+    int ChanceVehicle = max(100-level * 10, 20);
+    if(addActor(ChanceVehicle)){
+        addCab();
+    }
     
     //Display
     int score = getScore();
@@ -151,6 +155,17 @@ StudentWorld::~StudentWorld()
     cleanUp();
 }
 
+Actor* StudentWorld::avoidActor(int lane,double Ycoord)
+{
+    list<Actor*>:: iterator it;
+    for(it = actors.begin(); it!=actors.end();it++){
+        if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()>Ycoord)){
+            return *it;
+        }
+    }
+    return nullptr;
+}
+
 bool StudentWorld::addActor(int maxChance)
 {
     int chance = randInt(0, maxChance-1);
@@ -165,13 +180,33 @@ void StudentWorld::addHealing(Actor* cp)
     actors.push_back(new Healing(cp->getX(),cp->getY(),this));
 }
 
-Actor* StudentWorld::avoidActor(Actor* cab)
+void StudentWorld::addCab()
 {
-    list<Actor*>:: iterator it;
-    for(it = actors.begin(); it!=actors.end();it++){
-        if(((*it)->needAvoid()) && (cab->onWhichLean()==(*it)->onWhichLean()) && ((*it)->getY()>cab->getY())){
-            return *it;
+    int check_lane[3];
+    for(int i=0;i<3;i++){
+        int cur_lane = randInt(1, 3);
+        while(cur_lane==check_lane[0]||cur_lane==check_lane[1]||cur_lane==check_lane[2]){
+            cur_lane = randInt(1, 3);
+        }
+        check_lane[i] = cur_lane;
+        if(avoidActor(check_lane[i], 0)==nullptr||(avoidActor(check_lane[i], 0)!=nullptr && avoidActor(check_lane[i], 0)->getY()>(VIEW_HEIGHT/3))){
+            actors.push_back(new ZombieCab(centerOfLane(check_lane[i]),SPRITE_HEIGHT/2,getPlayer()->getVerS()+randInt(2, 4),this));
+            return;
+        }
+        if(avoidActor(check_lane[i], VIEW_HEIGHT)==nullptr||(avoidActor(check_lane[i], VIEW_HEIGHT)!=nullptr && avoidActor(check_lane[i], VIEW_HEIGHT)->getY()<(VIEW_HEIGHT * 2 / 3))){
+            actors.push_back(new ZombieCab(centerOfLane(check_lane[i]),VIEW_HEIGHT - SPRITE_HEIGHT / 2,getPlayer()->getVerS()-randInt(2, 4),this));
+            return;
         }
     }
-    return cab;
 }
+
+double StudentWorld::centerOfLane(int lane)
+{
+    if(lane == 1)
+        return ROAD_CENTER - ROAD_WIDTH/3;
+    else if(lane ==2)
+        return ROAD_CENTER;
+    else
+        return ROAD_CENTER + ROAD_WIDTH/3;
+}
+           

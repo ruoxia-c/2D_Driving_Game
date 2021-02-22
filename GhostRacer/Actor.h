@@ -181,8 +181,8 @@ private:
 class ZombieCab: public Pedestrain
 {
 public:
-    ZombieCab(double startX, double startY,StudentWorld* cp):
-    Pedestrain(IID_ZOMBIE_CAB,startX, startY,90,4.0,0,0,0,cp,0,3,true)
+    ZombieCab(double startX, double startY,int vertSpeed,StudentWorld* cp):
+    Pedestrain(IID_ZOMBIE_CAB,startX, startY,90,4.0,0,vertSpeed,0,cp,0,3,true)
     { damagedRacer = false;}
 private:
     virtual void overDiff();

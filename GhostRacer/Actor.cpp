@@ -315,11 +315,13 @@ void ZombieCab::overDiff()
 
 void ZombieCab::cabDiff()
 {
-    if((getVerS()>getWorld()->getPlayer()->getVerS()) && (getWorld()->avoidActor(this)!=this)&&(getWorld()->avoidActor(this)->getY()<(getY()+96))){
+    double Ycoord = getY();
+    int lane = onWhichLean();
+    if((getVerS()>getWorld()->getPlayer()->getVerS()) && (getWorld()->avoidActor(lane,Ycoord)!=nullptr)&&(getWorld()->avoidActor(lane,Ycoord)->getY()<(getY()+96))){
         setVerS(-0.5);
         return;
     }
-    if((getVerS()<=getWorld()->getPlayer()->getVerS()) && (getWorld()->avoidActor(this)!=this)&&(getWorld()->avoidActor(this)->getY()>(getY()-96))&&(getWorld()->avoidActor(this)!=getWorld()->getPlayer())){
+    if((getVerS()<=getWorld()->getPlayer()->getVerS()) && (getWorld()->avoidActor(lane,Ycoord)!=nullptr)&&(getWorld()->avoidActor(lane,Ycoord)->getY()>(getY()-96))&&(getWorld()->avoidActor(lane,Ycoord)!=getWorld()->getPlayer())){
         setVerS(0.5);
         return;
     }
