@@ -44,6 +44,7 @@ int StudentWorld::init()
     }
     lastWhiteY = (M-1)* (4*SPRITE_HEIGHT);
     saveSoul = 0;
+    bonusPoint = 5000;
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -51,6 +52,7 @@ int StudentWorld::move()
 {
     // This code is here merely to allow the game to build, run, and terminate after you hit enter.
     // Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
+    bonusPoint--;
     player->doSomething();
     int level = getLevel();
     int lives = getLives();
@@ -132,7 +134,7 @@ int StudentWorld::move()
     int souls = saveSoul;
     int health = player->getHealth();
     int sprays = player->getSprays();
-    int bonus = 0;
+    int bonus = bonusPoint;
     ostringstream oss;
     oss << "Score: "<<score<<"  Lvl: "<<level<<"  Souls2Save: "<<souls<<"  Lives: "<<lives<<"  Health: "<<health <<"  Sprays: "<<sprays<<"  Bonus: "<<bonus;
     string s=oss.str();
@@ -218,6 +220,13 @@ void StudentWorld::addHealing(Actor* cp)
 void StudentWorld::addOil(Actor* cp)
 {
     actors.push_back(new OilSlick(cp->getX(),cp->getY(),this));
+}
+
+void StudentWorld::addSpray(Actor *cp)
+{
+    Actor* spray = new Projectile(cp->getX(),cp->getY(),cp->getDirection(),this);
+    spray->moveForward(SPRITE_HEIGHT);
+    actors.push_back(spray);
 }
 
 void StudentWorld::addCab()

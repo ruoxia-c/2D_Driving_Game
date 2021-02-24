@@ -55,7 +55,7 @@ public:
     int getHealth(){ return health;};
     int getSprays(){ return holyWater;};
     void spun();
-    void changeHealth(int val){ health = health + val;};
+    void changeHealth(int val);
     void changeWater(int val){ holyWater = holyWater+val;};
 private:
     void moveAlgorithm();

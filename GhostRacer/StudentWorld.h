@@ -21,6 +21,7 @@ public:
     void saveNewSoul(){ saveSoul++; };
     void addHealing(Actor* cp);
     void addOil(Actor* cp);
+    void addSpray(Actor* cp);
     Actor* avoidActor(int lane,double Ycoord,bool front);
     Actor* waterOverlap(Actor* cp);
 private:
@@ -28,6 +29,7 @@ private:
     list<Actor*> actors;
     double lastWhiteY;
     int saveSoul;
+    int bonusPoint;
     const double LEFT_EDGE = ROAD_CENTER - ROAD_WIDTH/2;
     const double RIGHT_EDGE = ROAD_CENTER + ROAD_WIDTH/2;
     bool addActor(int maxChance);

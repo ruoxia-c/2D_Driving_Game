@@ -92,6 +92,13 @@ void GhostRacer::doSomething()
                     moveAlgorithm();
                 }
                 break;
+            case KEY_PRESS_SPACE:
+                if(holyWater>0){
+                    getWorld()->addSpray(this);
+                    getWorld()->playSound(SOUND_PLAYER_SPRAY);
+                    holyWater--;
+                }
+                break;
             default:
                 break;
         }
@@ -139,6 +146,14 @@ void GhostRacer::spun()
         else
             changed = false;
     }
+}
+
+void GhostRacer::changeHealth(int val)
+{
+    if(health+val <=100)
+        health = health+val;
+    else
+        health = 100;
 }
 
 //BorderLine
