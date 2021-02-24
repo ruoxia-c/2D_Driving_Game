@@ -155,15 +155,41 @@ StudentWorld::~StudentWorld()
     cleanUp();
 }
 
-Actor* StudentWorld::avoidActor(int lane,double Ycoord)
+Actor* StudentWorld::avoidActor(int lane,double Ycoord,bool front)
 {
+    Actor* cloest = nullptr;
     list<Actor*>:: iterator it;
-    for(it = actors.begin(); it!=actors.end();it++){
-        if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()>Ycoord)){
-            return *it;
+    if(front){   //find cloest actor in front of Ycoord
+        for(it = actors.begin(); it!=actors.end();it++){
+            if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()>Ycoord)){
+                cloest = *it;
+                break;
+            }
+        } //find the first one in front of
+        if(cloest != nullptr){
+            for(it = actors.begin(); it!=actors.end();it++){
+                if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()>Ycoord)&&((*it)->getY()<cloest->getY())){
+                    cloest = *it;
+                }
+            }
         }
     }
-    return nullptr;
+    else{
+        for(it = actors.begin(); it!=actors.end();it++){
+            if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()<Ycoord)){
+                cloest = *it;
+                break;
+            }
+        } //find the first one in front of
+        if(cloest != nullptr){
+            for(it = actors.begin(); it!=actors.end();it++){
+                if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()<Ycoord)&&((*it)->getY()>cloest->getY())){
+                    cloest = *it;
+                }
+            }
+        }
+    }
+    return cloest;
 }
 
 Actor* StudentWorld::waterOverlap(Actor *cp)
@@ -203,11 +229,13 @@ void StudentWorld::addCab()
             cur_lane = randInt(1, 3);
         }
         check_lane[i] = cur_lane;
-        if(avoidActor(check_lane[i], 0)==nullptr||(avoidActor(check_lane[i], 0)!=nullptr && avoidActor(check_lane[i], 0)->getY()>(VIEW_HEIGHT/3))){
+        Actor* bottomFront = avoidActor(check_lane[i], 0,true);
+        Actor* topBehind = avoidActor(check_lane[i], VIEW_HEIGHT,false);
+        if(bottomFront==nullptr||(bottomFront!=nullptr && bottomFront->getY()>(VIEW_HEIGHT/3))){
             actors.push_back(new ZombieCab(centerOfLane(check_lane[i]),SPRITE_HEIGHT/2,getPlayer()->getVerS()+randInt(2, 4),this));
             return;
         }
-        if(avoidActor(check_lane[i], VIEW_HEIGHT)==nullptr||(avoidActor(check_lane[i], VIEW_HEIGHT)!=nullptr && avoidActor(check_lane[i], VIEW_HEIGHT)->getY()<(VIEW_HEIGHT * 2 / 3))){
+        if(topBehind==nullptr||(topBehind!=nullptr && topBehind->getY()<(VIEW_HEIGHT * 2 / 3))){
             actors.push_back(new ZombieCab(centerOfLane(check_lane[i]),VIEW_HEIGHT - SPRITE_HEIGHT / 2,getPlayer()->getVerS()-randInt(2, 4),this));
             return;
         }
