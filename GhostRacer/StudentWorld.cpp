@@ -103,7 +103,7 @@ int StudentWorld::move()
         lastWhiteY  = new_border_y;
     }
     
-    //add goodies
+    //add other actors
     int ChanceOfLostSoul = 100;
     if(addActor(ChanceOfLostSoul)){
         actors.push_back(new Soul(randInt(LEFT_EDGE, RIGHT_EDGE),VIEW_HEIGHT,this));
@@ -162,12 +162,18 @@ Actor* StudentWorld::avoidActor(int lane,double Ycoord,bool front)
     Actor* cloest = nullptr;
     list<Actor*>:: iterator it;
     if(front){   //find cloest actor in front of Ycoord
-        for(it = actors.begin(); it!=actors.end();it++){
-            if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()>Ycoord)){
-                cloest = *it;
-                break;
-            }
-        } //find the first one in front of
+        if(getPlayer()->onWhichLean() == lane && getPlayer()->getY()>Ycoord){
+            cloest = getPlayer();
+        }
+        else{
+            for(it = actors.begin(); it!=actors.end();it++){
+                if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()>Ycoord)){
+                    cloest = *it;
+                    break;
+                }
+            } //find the first one in front of
+        }
+        
         if(cloest != nullptr){
             for(it = actors.begin(); it!=actors.end();it++){
                 if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()>Ycoord)&&((*it)->getY()<cloest->getY())){
@@ -177,12 +183,17 @@ Actor* StudentWorld::avoidActor(int lane,double Ycoord,bool front)
         }
     }
     else{
-        for(it = actors.begin(); it!=actors.end();it++){
-            if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()<Ycoord)){
-                cloest = *it;
-                break;
-            }
-        } //find the first one in front of
+        if(getPlayer()->onWhichLean() == lane&& getPlayer()->getY()<Ycoord){
+            cloest = getPlayer();
+        }
+        else{
+            for(it = actors.begin(); it!=actors.end();it++){
+                if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()<Ycoord)){
+                    cloest = *it;
+                    break;
+                }
+            } //find the first one in front of
+        }
         if(cloest != nullptr){
             for(it = actors.begin(); it!=actors.end();it++){
                 if(((*it)->needAvoid()) && (lane==(*it)->onWhichLean()) && ((*it)->getY()<Ycoord)&&((*it)->getY()>cloest->getY())){

@@ -219,7 +219,8 @@ void Pedestrain::doSomething()
         return;
     if(checkOverlap(getWorld()->getPlayer())){
         overDiff();
-        return;
+        if(!isCab)
+            return;
     }
     zombiePedDiff();
     moveSameHori();
@@ -331,8 +332,8 @@ void ZombieCab::overDiff()
         return;
     getWorld()->playSound(SOUND_VEHICLE_CRASH);
     getWorld()->getPlayer()->demageRacer(20);
-    double racerX = getWorld()->getPlayer()->getX();
-    if(getX()<= racerX){
+    double racerX = getX() - getWorld()->getPlayer()->getX();
+    if(racerX<=0){
         setHoriS(-getHoriS()-5);
         setDirection(120 + randInt(0, 19));
     }
@@ -349,11 +350,11 @@ void ZombieCab::cabDiff()
     int lane = onWhichLean();
     Actor* frontCloest = getWorld()->avoidActor(lane,Ycoord,true);
     Actor* behindCloest = getWorld()->avoidActor(lane,Ycoord,false);
-    if((getVerS()>getWorld()->getPlayer()->getVerS()) && (frontCloest!=nullptr)&&(frontCloest->getY()<(getY()+96))){
+    if((getVerS()>getWorld()->getPlayer()->getVerS()) && (frontCloest!=nullptr)&&(frontCloest->getY()-getY()<96)){
         setVerS(-0.5);
         return;
     }
-    if((getVerS()<=getWorld()->getPlayer()->getVerS()) && (behindCloest!=nullptr)&&(behindCloest->getY()>(getY()-96))&&(behindCloest!=getWorld()->getPlayer())){
+    if((getVerS()<=getWorld()->getPlayer()->getVerS()) && (behindCloest!=nullptr)&&(getY()-behindCloest->getY()<96)&&(behindCloest!=getWorld()->getPlayer())){
         setVerS(0.5);
         return;
     }

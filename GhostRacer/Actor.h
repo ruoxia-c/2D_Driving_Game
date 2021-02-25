@@ -8,7 +8,7 @@ class StudentWorld;
 class Actor:public GraphObject
 {
 public:
-    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,bool alive,bool worthAviod, bool waterAffect):
+    Actor(int imageID, double startX, double startY,int startDirection, double size, int depth, double vertSpeed, double horiSpeed, StudentWorld* cp,bool alive,bool worthAviod, bool waterAffect):
     GraphObject(imageID, startX, startY, startDirection, size, depth),m_world(cp),vertSpeed(vertSpeed),horiSpeed(horiSpeed),liveState(alive),worthAvoid(worthAviod),waterAffect(waterAffect)
     { }; //constructor
     virtual void doSomething()=0;
@@ -18,15 +18,15 @@ public:
         return liveState;
     }
     int onWhichLean();
-    int getHoriS(){ return horiSpeed;}
-    int getVerS(){ return vertSpeed;}
+    double getHoriS(){ return horiSpeed;}
+    double getVerS(){ return vertSpeed;}
     bool needAvoid(){return worthAvoid;};
     bool projectAffect(){return waterAffect;};
     bool checkOverlap(Actor* cp);
 protected:
     StudentWorld* getWorld(){return m_world;}
-    void setHoriS(int chan){ horiSpeed = horiSpeed + chan;}
-    void setVerS(int chan){ vertSpeed = vertSpeed + chan;}
+    void setHoriS(double chan){ horiSpeed = horiSpeed + chan;}
+    void setVerS(double chan){ vertSpeed = vertSpeed + chan;}
     void notLive(){ liveState = false;};
     
     void moveSameHori(); //only vertical speed change
@@ -34,8 +34,8 @@ protected:
 private:
     StudentWorld* m_world;
     bool liveState;
-    int vertSpeed;
-    int horiSpeed;
+    double vertSpeed;
+    double horiSpeed;
     bool worthAvoid;
     bool waterAffect;
 };
@@ -79,7 +79,7 @@ private:
 class Goodies: public Actor
 {
 public:
-    Goodies(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,int playSound,int increaseScor,bool isOil,bool waterAffect):
+    Goodies(int imageID, double startX, double startY,int startDirection, double size, int depth, double vertSpeed, double horiSpeed, StudentWorld* cp,int playSound,int increaseScor,bool isOil,bool waterAffect):
     Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true,false,waterAffect),playSound(playSound),inScore(increaseScor),isOil(isOil)
     {};
     virtual void doSomething();
@@ -144,7 +144,7 @@ private:
 class Pedestrain: public Actor
 {
 public:
-    Pedestrain(int imageID, double startX, double startY,int startDirection, double size, int depth, int vertSpeed, int horiSpeed, StudentWorld* cp,int planMove,int hitPoint,bool isCab):
+    Pedestrain(int imageID, double startX, double startY,int startDirection, double size, int depth, double vertSpeed, double horiSpeed, StudentWorld* cp,int planMove,int hitPoint,bool isCab):
     Actor(imageID, startX, startY, startDirection, size, depth, vertSpeed, horiSpeed,cp,true,true,true),planMove(planMove),hitPoint(hitPoint),isCab(isCab)
     {};
     virtual void doSomething();
@@ -192,7 +192,7 @@ private:
 class ZombieCab: public Pedestrain
 {
 public:
-    ZombieCab(double startX, double startY,int vertSpeed,StudentWorld* cp):
+    ZombieCab(double startX, double startY,double vertSpeed,StudentWorld* cp):
     Pedestrain(IID_ZOMBIE_CAB,startX, startY,90,4.0,0,vertSpeed,0,cp,0,3,true)
     { damagedRacer = false;}
     virtual void damageByWater();
