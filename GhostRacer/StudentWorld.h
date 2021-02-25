@@ -18,7 +18,7 @@ public:
     virtual int move();
     virtual void cleanUp();
     GhostRacer* getPlayer(){ return player;};
-    void saveNewSoul(){ saveSoul++; };
+    void saveNewSoul(){ saveSoul--; };
     void addHealing(Actor* cp);
     void addOil(Actor* cp);
     void addSpray(Actor* cp);

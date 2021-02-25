@@ -24,7 +24,7 @@ bool Actor::checkOverlap(Actor* cp)
 {
     double delta_x = abs(getX() - cp->getX());
     double delta_y = abs(getY() - cp->getY());
-    double radius_sum = getRadius() + m_world->getPlayer()->getRadius();
+    double radius_sum = getRadius() + cp->getRadius();
     if(delta_x < radius_sum*0.25 && delta_y < radius_sum*0.6)
         return true;
     return false;

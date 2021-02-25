@@ -8,7 +8,7 @@ using namespace std;
 
 GameWorld* createStudentWorld(string assetPath)
 {
-	return new StudentWorld(assetPath);
+    return new StudentWorld(assetPath);
 }
 
 // Students:  Add code to this file, StudentWorld.h, Actor.h, and Actor.cpp
@@ -43,7 +43,8 @@ int StudentWorld::init()
         actors.push_back(pr);
     }
     lastWhiteY = (M-1)* (4*SPRITE_HEIGHT);
-    saveSoul = 0;
+    int level = getLevel();
+    saveSoul = 2*level+5;
     bonusPoint = 5000;
     return GWSTATUS_CONTINUE_GAME;
 }
@@ -60,12 +61,18 @@ int StudentWorld::move()
     for(it = actors.begin(); it!=actors.end();it++){
         if((*it)->isLive()){
             (*it)->doSomething();
-            if(player->getHealth()<=0)
+            if(player->getHealth()<=0){
+                playSound(SOUND_PLAYER_DIE);
                 return GWSTATUS_PLAYER_DIED;
-            if(getLives()<lives)
+            }
+            if(getLives()<lives){
+                playSound(SOUND_PLAYER_DIE);
                 return GWSTATUS_PLAYER_DIED;
-            if(saveSoul == 2*level+5)
+            }
+            if(saveSoul == 0){
+                playSound(SOUND_FINISHED_LEVEL);
                 return GWSTATUS_FINISHED_LEVEL;
+            }
         }
     }
     
